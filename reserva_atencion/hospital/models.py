@@ -8,6 +8,12 @@ class Medico(models.Model):
     nombre_completo = models.CharField(max_length=200)
     especialidad = models.CharField(max_length=200)
 
+    class Meta:
+        db_table = "medicos"
+        verbose_name = "medico"
+        verbose_name_plural = "medicos"
+
+
     def __str__(self):
         return self.nombre_completo
 
@@ -21,6 +27,11 @@ class AtencionMedica(models.Model):
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
     usuario = models.ManyToManyField(Usuario, through="ReservaAtencion")
 
+    class Meta:
+        db_table = "atencion_medica"
+        verbose_name = "atencion medica"
+        verbose_name_plural = "atenciones medica"
+
     def __str__(self):
         return f"{self.dia}, {self.hora_inicio}-{self.hora_termino}, box: {self.box}, dr: {self.medico}"
 
@@ -30,3 +41,8 @@ class ReservaAtencion(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     atencionmedica = models.ForeignKey(AtencionMedica, on_delete=models.CASCADE)
     fecha = models.DateField(auto_now_add=True)
+
+    class Meta:
+        db_table = "reserva_atencion"
+        verbose_name = "reserva de atencion"
+        verbose_name_plural = "reservas de atencion"
