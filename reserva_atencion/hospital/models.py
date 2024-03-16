@@ -5,8 +5,10 @@ from usuarios.models import Usuario
 
 class Medico(models.Model):
     rut = models.CharField(max_length=10, validators=[MinLengthValidator(10)], unique=True)
-    nombre_completo = models.CharField(max_length=200)
+    nombre = models.CharField(max_length=150)
+    apellido = models.CharField(max_length=150)
     especialidad = models.CharField(max_length=200)
+    imagen = models.ImageField(upload_to="hospital/medicos", null=True, blank=True)
 
     class Meta:
         db_table = "medicos"

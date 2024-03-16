@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if medicos %}
+{{medicos}}
+
+{% else %}
+No hay medicos disponibles
+
+{% endif %}
+
+{% endblock %}

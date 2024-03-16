@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+aqui va el perfil de usuario
+
+
+<div class="text-center" style="width: 50%; margin: auto;">
+    <h1>Datos de {{usuario.first_name}} {{usuario.last_name}}</h1>
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <th scope="row">Rut</th>
+                <td>{{usuario.username}}</td>        
+            </tr>
+            <tr>
+                <th scope="row">Nombre</th>
+                <td>{{usuario.first_name}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Apellido</th>
+                <td colspan="2">{{usuario.last_name}}</td>
+            </tr>
+            <tr>
+                <th scope="row">E-mail</th>
+                <td colspan="2">{{usuario.email}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Dirección</th>
+                <td colspan="2">{{usuario.direccion}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Última conexión</th>
+                <td colspan="2">{{usuario.last_login}}</td>
+            </tr>
+        </tbody>
+      </table>
+    
+    
+    <!--button modificar datos-->
+    <div>
+        <a href="#" class="btn btn-primary">Modificar datos</a>
+    </div>
+</div>
+
+
+
+{% endblock %}
