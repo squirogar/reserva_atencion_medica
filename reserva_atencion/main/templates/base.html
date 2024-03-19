@@ -11,7 +11,7 @@
 <body>
 
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark" style="font-size: larger;">
+    <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark" style="font-size: x-large;">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample11" aria-controls="navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -20,19 +20,22 @@
             <div class="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
                 <a class="navbar-brand col-lg-3 me-0" href="#">Centered nav</a>
                 <ul class="navbar-nav col-lg-6 justify-content-lg-center">
-                    <li class="nav-item">
+                    <li class="nav-item pr-1">
                         <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Inicio</a>
                     </li>
             
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/atencion/reservar/' %}active{% endif %}" href="{% url 'reservar_hora' %}">Reservar Hora</a>
+                    <li class="nav-item pr-1">
+                        <a class="nav-link {% if request.path == '/atencion/reservar/' %}active{% endif %}" href="{% url 'reservar_atencion' %}">Reservar Hora</a>
                     </li>
-                    <li class="nav-item">
+
+                    <li class="nav-item pr-1">
                         <a class="nav-link {% if request.path == '/atencion/historial/' %}active{% endif %}" href="{% url 'historial' %}">Historial</a>
                     </li>
-                    <li class="nav-item">
+
+                    <li class="nav-item pr-1">
                         <a class="nav-link {% if request.path == '/atencion/medicos/' %}active{% endif %}" href="{% url 'medicos' %}">Médicos</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == '/perfil/' %}active{% endif %}" href="{% url 'perfil' %}">Mis datos</a>
                     </li>
