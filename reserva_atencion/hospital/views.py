@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import Medico, Atencion
 
+from django.db.models import Exists
+
 from datetime import date
 import calendar
 import locale
@@ -26,10 +28,37 @@ def reservar_atencion(request):
 
     print(info_semana)
 
+    horarios= [
+            "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30",
+            "12:00", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"
+        ]
     
-    #for i in 
+    print("\naca estamos comprobando las atenciones para un dia\n")
+    for i in range(len(info_semana["semana"])):
+        # atenciones para un dia especifico de la semana
+        atenciones_dia = Atencion.objects.filter(fecha_atencion=info_semana["semana"][i][1])
+        print(atenciones_dia, "\n")
+
+        # vamos pregunta por cada horario los medicos disponibles
+        for hora in horarios:
+            print("\t hora", hora)
+            # Utilizamos exclude() en el modelo Medico para excluir aquellos médicos 
+            # que tienen una atención programada a una determinada hora.
+            medicos_disponibles = Medico.objects.exclude(atencion__hora_atencion=hora)
+
+            print("medicos disponibles: ", medicos_disponibles)
+            #atenciones_hora = atenciones_dia.filter(hora_atencion=hora)
+            #print("atenciones_hora", atenciones_hora)
+
+            if medicos_disponibles:
+                # guardamos la lista de medicos en algun lugar junto con la hora
+                pass
 
 
+
+
+    ######
+        
     fecha_inicio = info_semana["semana"][0][1]
     fecha_termino = info_semana["semana"][-1][1]
     
