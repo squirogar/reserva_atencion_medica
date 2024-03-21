@@ -10,20 +10,26 @@ Aqui se reserva hora
     {% endfor %}
 {% endif %}
 
+<h3>{{hoy}}</h3>
 
-<table>
+<div class="container">
 
-    {% for hora in horarios %}
-    <tr>
-        <th>
-            {{hora}}
-        </th>
-        
-        
-    </tr>    
-    {% endfor %}
+    <table>
+    
+        {% for sem in semana %}
+        <tr>
+            <td>
+                {{sem.dia}} {{sem.fecha}}
+            </td>
+            
+            
+        </tr>    
+        {% endfor %}
+    
+    </table>
+</div>
 
-</table>
+
 
 
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Medico, Atencion
 
-from django.db.models import Exists
+from . import utils
 
 from datetime import date
 import calendar
@@ -24,9 +24,9 @@ def historial(request):
 def reservar_atencion(request):
     # reserva atencion
 
-    info_semana = get_semana(2024, 3, 20)
+    fechas_semana = get_semana(2024, 3, 20)
 
-    print(info_semana)
+    print(fechas_semana)
 
     horarios= [
             "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30",
@@ -34,12 +34,16 @@ def reservar_atencion(request):
         ]
     
     print("\naca estamos comprobando las atenciones para un dia\n")
-    for i in range(len(info_semana["semana"])):
+
+    semana = []    
+
+    for i in range(len(fechas_semana["semana"])):
         # atenciones para un dia especifico de la semana
-        atenciones_dia = Atencion.objects.filter(fecha_atencion=info_semana["semana"][i][1])
+        atenciones_dia = Atencion.objects.filter(fecha_atencion=fechas_semana["semana"][i][1])
         print(atenciones_dia, "\n")
 
         # vamos pregunta por cada horario los medicos disponibles
+        lista_horas = []
         for hora in horarios:
             print("\t hora", hora)
             # Utilizamos exclude() en el modelo Medico para excluir aquellos médicos 
@@ -52,28 +56,32 @@ def reservar_atencion(request):
 
             if medicos_disponibles:
                 # guardamos la lista de medicos en algun lugar junto con la hora
-                pass
+                lista_horas.append(utils.Hora(hora, medicos_disponibles))
 
-
-
-
-    ######
         
-    fecha_inicio = info_semana["semana"][0][1]
-    fecha_termino = info_semana["semana"][-1][1]
-    
-    atenciones = Atencion.objects.filter(fecha_atencion__gte=fecha_inicio, fecha_atencion__lte=fecha_termino)
-    print(atenciones)
+        # guardamos los dias con su fecha y con sus horas disponibles
+        semana.append(utils.DiaAtencion(
+            dia=fechas_semana["semana"][i][0], 
+            fecha=fechas_semana["semana"][i][1],
+            lista_horas=lista_horas)
+        )
 
-    c = {
-        "atenciones": atenciones,
-        "horarios": [
-            "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30",
-            "12:00", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"
-        ]
+
+    contexto = {
+        "hoy": fechas_semana["hoy"],
+        "semana": semana,
+        "horarios": horarios
     }
 
-    return render(request, "reservar_atencion.html", context=c)
+
+
+
+
+    
+
+    return render(request, "reservar_atencion.html", context=contexto)
+
+
 
 
 
