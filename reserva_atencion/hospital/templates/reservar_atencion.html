@@ -10,25 +10,47 @@ Aqui se reserva hora
     {% endfor %}
 {% endif %}
 
+<!-- Example split danger button -->
+
 <h3>{{hoy}}</h3>
 
 <div class="container">
 
-    <table>
-    
-        {% for sem in semana %}
+    {% for sem in semana %}
+    <table class="d-inline">
         <tr>
-            <td>
-                {{sem.dia}} {{sem.fecha}}
-            </td>
-            
-            
-        </tr>    
-        {% endfor %}
+            <th>
+                {{sem.dia}}
+                <br>
+                {{sem.fecha}}
+            </th>
+        </tr>
+            {% for lh in sem.lista_horas %}
+                <tr>
+                    
+                    <td>
+                        
+                        jojo
+                        {{lh.get_hora}}
+                        <br>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Médicos disponibles
+                            </button>
+                            <ul class="dropdown-menu">
+                                {%for medico in lh.get_medicos%}
+                              <li><a class="dropdown-item" href="#">{{medico}}</a></li>
+                              {%endfor%}
+                            </ul>
+                          </div>
+                        
+                    </td>
+                </tr>
+            {% endfor %}    
+        </table>
+    {% endfor %}
     
-    </table>
 </div>
-
 
 
 

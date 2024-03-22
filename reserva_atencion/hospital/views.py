@@ -38,6 +38,7 @@ def reservar_atencion(request):
     semana = []    
 
     for i in range(len(fechas_semana["semana"])):
+        print("\t\tDIA:", fechas_semana["semana"][i][0])
         # atenciones para un dia especifico de la semana
         atenciones_dia = Atencion.objects.filter(fecha_atencion=fechas_semana["semana"][i][1])
         print(atenciones_dia, "\n")
@@ -48,8 +49,10 @@ def reservar_atencion(request):
             print("\t hora", hora)
             # Utilizamos exclude() en el modelo Medico para excluir aquellos médicos 
             # que tienen una atención programada a una determinada hora.
-            medicos_disponibles = Medico.objects.exclude(atencion__hora_atencion=hora)
-
+            #medicos_disponibles = Medico.objects.exclude(atencion__hora_atencion=hora, atencion__fecha_atencion=fechas_semana["semana"][i][1])
+            atencion_con_hora_fecha = Atencion.objects.filter(hora_atencion=hora, fecha_atencion=fechas_semana["semana"][i][1])
+            medicos_con_atencion = atencion_con_hora_fecha.values_list('medico_id', flat=True)
+            medicos_disponibles = Medico.objects.exclude(id__in=medicos_con_atencion)
             print("medicos disponibles: ", medicos_disponibles)
             #atenciones_hora = atenciones_dia.filter(hora_atencion=hora)
             #print("atenciones_hora", atenciones_hora)
