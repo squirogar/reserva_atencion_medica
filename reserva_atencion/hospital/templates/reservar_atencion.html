@@ -4,55 +4,152 @@
 {% block content %}
 Aqui se reserva hora
 
-{% if atenciones %}
-    {% for atencion in atenciones %}
-        {{atencion}}
-    {% endfor %}
-{% endif %}
-
-<!-- Example split danger button -->
 
 <h3>{{hoy}}</h3>
 
 <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <p style="font-size: larger;">1. Elija el día de la atención:</p>
+            <form  method="get" id="form_fecha">
+            <select id="dropdown_fecha" class="form-control" style="font-size: larger;">
+                {% for dia, fecha in semana.items %}
+                    <option value='{{fecha.isoformat}}'>{{dia|capfirst}}, {{fecha}} </option>
+                {% endfor %}
+            </select>
+            <input class="btn btn-primary" type="submit" id="boton_buscar_horas" value="Buscar horas">
+            </form>
+            <div>
+                <button class="btn btn-danger" onclick="limpiaBusqueda()">Limpiar búsqueda</button>
+            </div>
+        </div>
 
-    {% for sem in semana %}
-    <table class="d-inline">
-        <tr>
-            <th>
-                {{sem.dia}}
-                <br>
-                {{sem.fecha}}
-            </th>
-        </tr>
-            {% for lh in sem.lista_horas %}
-                <tr>
-                    
-                    <td>
-                        
-                        jojo
-                        {{lh.get_hora}}
-                        <br>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              Médicos disponibles
-                            </button>
-                            <ul class="dropdown-menu">
-                                {%for medico in lh.get_medicos%}
-                              <li><a class="dropdown-item" href="#">{{medico}}</a></li>
-                              {%endfor%}
-                            </ul>
-                          </div>
-                        
-                    </td>
-                </tr>
-            {% endfor %}    
-        </table>
-    {% endfor %}
+    </div>
+
+    <div class="row mt-3">
+        <p style="font-size: larger;">2. Elija la hora de la atención:</p>
+        <div id="div_horas">
+            <div class="col-md-6" id="dropdown_horas_container">
+
+                <!-- Dropdown 2 will be inserted here -->
+                
+                
+            </div>
+        </div>
+    </form>
+    </div>
+
+    <div class="row mt-3">
+        <p style="font-size: larger;">3. Elija el médico:</p>
+        <form  method="post" action="{% url 'reserva_atencion_medica' %}" id="form_reserva_atencion">
+
+            
+            <div class="col-md-6" id="dropdown_medicos_container">
+                <!-- Dropdown 3 will be inserted here -->
+            
+            </div>
+        </form>
+    </div>
+    
+
     
 </div>
 
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        // formulario fechas
+        $('#form_fecha').submit(function (e) {
+            e.preventDefault();
+            console.log($('#dropdown_fecha').val());
+            $.ajax({
+                url: "{% url 'get_horas_disponibles' %}", // La URL de tu vista de Django que manejará la solicitud AJAX
+                type: "get",
+                data: {
+                    'fecha': $('#dropdown_fecha').val(),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log("jkfdjkfjd")
+                    var dropdown2HTML = '<select class="form-control" id="dropdown_horas" style="font-size:larger">';
+                    $.each(data.opciones, function (index, opcion) {
+                        //console.log(opcion) //diccionario: {hora: lista_medicos}
+                        //hora_disponible=[id, nombre, apellido]
+                        dropdown2HTML += '<option value="' + opcion.hora + '">' + opcion.hora + '</option>';
+                    });
+                    dropdown2HTML += '</select>';
+                    dropdown2HTML += '<button class="btn btn-primary" type="button" id="boton_buscar_medicos">Buscar médicos</button>';
+                    $('#dropdown_horas_container').html(dropdown2HTML);
+
+                    //deshabilitamos el boton y dropdown de form_fecha
+                    $('#boton_buscar_horas').prop("disabled", true);
+                    $('#dropdown_fecha').prop("disabled", true);
+
+                    //establecemos un listener a boton_buscar_medicos
+                    setListenerBoton(data);
+
+                },
+                error : function(jqXHR, status, error) {
+                    alert('Disculpe, existió un problema');
+                }, 
+            });
+        });
+
+
+
+    });
+
+
+
+    function setListenerBoton(data) {
+        var boton_buscar_medicos = document.getElementById('boton_buscar_medicos');
+
+        boton_buscar_medicos.addEventListener("click", function get_medicos() {
+            var hora_elegida = document.getElementById('dropdown_horas').value;
+            console.log("hora elegida", hora_elegida);
+
+            var dropdown2HTML = '<select class="form-control" id="dropdown_medicos">';
+            var medicos = [];
+            
+            
+            // Jquery //
+            // recorremos el json "data" para obtener la lista de medicos
+            $.each(data.opciones, function (index, opcion) {
+                if (opcion.hora == hora_elegida) {
+                    medicos = opcion.medicos
+                    console.log(opcion.medicos);
+                    return;
+                }
+            });
+            // // //
+
+            var dropdown2HTML = '<select class="form-control">';
+            medicos.forEach(function (medico) {
+                dropdown2HTML += '<option value="' + medico[0] + '">' + medico[1] + ' ' + medico[2] + '</option>';
+
+            });
+            dropdown2HTML += '</select>';
+            dropdown2HTML += '<input class="btn btn-primary" type="submit" value="Reservar atencion">';
+            $('#dropdown_medicos_container').html(dropdown2HTML);
+            
+        }); // escucho el evento "click" en el botón "boton_buscar_horas"
+    }
+
+
+
+    function limpiaBusqueda() {
+        document.getElementById("dropdown_horas_container").innerHTML = "";
+        $('#boton_buscar_horas').prop("disabled", false);
+        $('#dropdown_fecha').prop("disabled", false);
+        document.getElementById("dropdown_medicos_container").innerHTML = "";
+    }
+
+
+
+</script>
 
 
 
