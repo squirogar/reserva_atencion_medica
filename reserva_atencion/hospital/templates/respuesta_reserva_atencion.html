@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Resultado{% endblock %}
+
+{% block content %}
+
+{% if error %}
+    Ha ocurrido un error en la reserva de atención. Por favor, intente nuevamente
+{% else %}
+    Atención reservada, muchas gracias.
+
+    La información de su reserva de atención es la siguiente:
+    {{id}}, {{fecha}}, {{hora}}, {{medico}}, {{box}}
+
+{% endif %}
+
+{% endblock %}

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% block title %}Reserva{% endblock %}
 
 {% block content %}
 Aqui se reserva hora
@@ -19,9 +20,8 @@ Aqui se reserva hora
             </select>
             <input class="btn btn-primary" type="submit" id="boton_buscar_horas" value="Buscar horas">
             </form>
-            <div>
-                <button class="btn btn-danger" onclick="limpiaBusqueda()">Limpiar búsqueda</button>
-            </div>
+            <button class="btn btn-danger" onclick="limpiaBusqueda()">Limpiar búsqueda</button>
+           
         </div>
 
     </div>
@@ -41,8 +41,8 @@ Aqui se reserva hora
 
     <div class="row mt-3">
         <p style="font-size: larger;">3. Elija el médico:</p>
-        <form  method="post" action="{% url 'reserva_atencion_medica' %}" id="form_reserva_atencion">
-
+        <form  method="post" action="{% url 'ingresar_atencion_medica' %}" id="form_reserva_atencion">
+            {% csrf_token %}
             
             <div class="col-md-6" id="dropdown_medicos_container">
                 <!-- Dropdown 3 will be inserted here -->
@@ -103,7 +103,7 @@ Aqui se reserva hora
     });
 
 
-
+    // establece un listener en el boton buscar medicos
     function setListenerBoton(data) {
         var boton_buscar_medicos = document.getElementById('boton_buscar_medicos');
 
@@ -114,8 +114,6 @@ Aqui se reserva hora
             var dropdown2HTML = '<select class="form-control" id="dropdown_medicos">';
             var medicos = [];
             
-            
-            // Jquery //
             // recorremos el json "data" para obtener la lista de medicos
             $.each(data.opciones, function (index, opcion) {
                 if (opcion.hora == hora_elegida) {
@@ -124,22 +122,28 @@ Aqui se reserva hora
                     return;
                 }
             });
-            // // //
+            
+            
 
-            var dropdown2HTML = '<select class="form-control">';
+            var dropdown2HTML = '<select  name="medico" class="form-control">';
             medicos.forEach(function (medico) {
                 dropdown2HTML += '<option value="' + medico[0] + '">' + medico[1] + ' ' + medico[2] + '</option>';
 
             });
-            dropdown2HTML += '</select>';
-            dropdown2HTML += '<input class="btn btn-primary" type="submit" value="Reservar atencion">';
+            
+            var fecha_sel = document.getElementById("dropdown_fecha").value;
+            var hora_sel = document.getElementById("dropdown_horas").value;
+            dropdown2HTML += '</select><input type="hidden" name="fecha" value="' 
+                + fecha_sel + '"/><input type="hidden" name="hora" value="' 
+                + hora_sel + '" /><input class="btn btn-primary" type="submit" value="Reservar atencion">';
+            
             $('#dropdown_medicos_container').html(dropdown2HTML);
             
         }); // escucho el evento "click" en el botón "boton_buscar_horas"
     }
 
 
-
+    // reestablece los elementos html.
     function limpiaBusqueda() {
         document.getElementById("dropdown_horas_container").innerHTML = "";
         $('#boton_buscar_horas').prop("disabled", false);
