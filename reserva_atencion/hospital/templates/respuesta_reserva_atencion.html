@@ -4,12 +4,26 @@
 {% block content %}
 
 {% if error %}
-    Ha ocurrido un error en la reserva de atención. Por favor, intente nuevamente
+    <div class="container text-center">
+        <h1>Error en reserva de atención</h1>
+        <p>Ha ocurrido un error en la reserva de atención. Por favor, intente nuevamente.</p>
+    </div>
 {% else %}
-    Atención reservada, muchas gracias.
+    <div class="container text-center">
+        <h1>Atención reservada</h1>
+        
+        <p>La información de su reserva de atención es la siguiente:</p>
+        
+            <p>Id atención: {{id}}</p>
+            <p>Paciente: {{rut}}</p>
+            <p>Medico: {{medico}}</p>
+            <p>Box: {{box}}</p>
+            <p>Hora de atención: {{hora}}</p>
+            <p>Fecha de atención: {{fecha}}</p>
+            
+        Esta información se le ha enviado a su email <b>{{email}}</b> como respaldo.
+    </div>
 
-    La información de su reserva de atención es la siguiente:
-    {{id}}, {{fecha}}, {{hora}}, {{medico}}, {{box}}
 
 {% endif %}
 

@@ -43,14 +43,13 @@
                 
                 </ul>
                 <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-                    <button class="btn btn-danger">Cerrar Sesión</button>
+                    <a href="{% url 'auth:cerrar_sesion' %}"><button class="btn btn-danger">Cerrar Sesión</button></a>
                 </div>
             </div>
         </div>
     </nav>
     <!-- end navbar -->
 
-    {{request.path}}
     {% block content %}{% endblock %}
 
 

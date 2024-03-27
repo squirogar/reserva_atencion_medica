@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Medico, Atencion, Box
 from usuarios.models import Usuario
+from django.contrib.auth.decorators import login_required
 
 from . import utils
 
@@ -16,15 +17,22 @@ from django.db import IntegrityError
 # cambiamos el locale para que los dias de semana sean en español
 locale.setlocale(locale.LC_ALL, 'es_Es')
 
-
+@login_required(login_url="auth:login")
 def historial(request):
     # se recuperan todas las atenciones del usuario
-    historial = {}
+    usuario = Usuario.objects.get(username=request.user.username)
+    
+    atenciones_usuario = Atencion.objects.filter(usuario=usuario.id).select_related("medico__box").order_by("id")
 
-    return render(request, "historial.html", context=historial)
+    contexto = {
+        "usuario": usuario.username,
+        "atenciones": atenciones_usuario
+    }
+    
+    return render(request, "historial.html", context=contexto)
 
 
-
+@login_required(login_url="auth:login")
 def reservar_atencion(request):
     # reserva atencion
 
@@ -40,10 +48,6 @@ def reservar_atencion(request):
 
 
 
-
-
-    
-
     return render(request, "reservar_atencion.html", context=contexto)
 
 
@@ -51,6 +55,7 @@ def reservar_atencion(request):
 ################
 from django.http import JsonResponse
 
+@login_required(login_url="auth:login")
 def get_horas_disponibles(request):
     print("\n\n\nHORAS DISPONIBLES AJAX")
     fecha = request.GET.get('fecha')
@@ -94,33 +99,38 @@ def get_horas_disponibles(request):
 
 ################
 
+@login_required(login_url="auth:login")
 def ingresar_atencion_medica(request):
     print("aloha")
     if request.method == "POST":
-        fecha = request.POST["fecha"]
-        hora = request.POST["hora"]
-        usuario = request.user.username
+        # si es post ingresamos la atencion a la db
+        fecha = request.POST["fecha"] # fecha_atencion
+        hora = request.POST["hora"] # hora_atencion
+        usuario = request.user.username # usuario conectado
         print("username", usuario)
-        usuario = Usuario.objects.get(username=usuario).id
-        medico = request.POST["medico"]
-        reserva = date.today()
+        usuario = Usuario.objects.get(username=usuario).id # usuario que esta conectado
+        medico = request.POST["medico"] # id del medico
+        reserva = date.today() # dia de hoy en que se hizo la reserva
         print("datos antes de la insercion")
         print(fecha, hora, usuario, medico, reserva)
         try:
-            id = Atencion.objects.create(
+            atencion_ingresada = Atencion.objects.create(
                 fecha_atencion=fecha, hora_atencion=hora, fecha_reserva=reserva, medico_id=medico, usuario_id=usuario)
             
         except IntegrityError as err:
             print(err)
             contexto = {"error": True}
         else:
-            box = Box.objects.get(medico_id = medico)
+            box = Box.objects.get(medico_id=medico).nombre
+            medico = Medico.objects.get(id=medico)
             print(box)
             contexto = {
-                "id": id,
+                "id": atencion_ingresada.id,
+                "rut": request.user.username,
+                "email": request.user.email,
                 "fecha": fecha,
                 "hora": hora,
-                "medico": medico,
+                "medico": f"{medico.nombre} {medico.apellido}",
                 "box": box,
                 "error": False
                 }
@@ -205,10 +215,10 @@ def get_semana(year, month, day):
 
 
 
-
+@login_required(login_url="auth:login")
 def medicos(request):
     # se recuperan todos los medicos
-    medicos = Medico.objects.all()
-    lista_medicos = {"medicos": medicos}
+    medicos_con_box = Medico.objects.select_related("box")
+    lista_medicos = {"medicos": medicos_con_box}
 
     return render(request, "medicos.html", lista_medicos)

@@ -3,15 +3,15 @@
 {% block title %}Reserva{% endblock %}
 
 {% block content %}
-Aqui se reserva hora
 
+<h1>Reservar una atención médica</h1>
 
-<h3>{{hoy}}</h3>
+<h3>Día de hoy: {{hoy}}</h3>
 
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <p style="font-size: larger;">1. Elija el día de la atención:</p>
+            <p>1. Elija el día de la atención:</p>
             <form  method="get" id="form_fecha">
             <select id="dropdown_fecha" class="form-control" style="font-size: larger;">
                 {% for dia, fecha in semana.items %}
@@ -20,14 +20,14 @@ Aqui se reserva hora
             </select>
             <input class="btn btn-primary" type="submit" id="boton_buscar_horas" value="Buscar horas">
             </form>
-            <button class="btn btn-danger" onclick="limpiaBusqueda()">Limpiar búsqueda</button>
+            
            
         </div>
 
     </div>
 
     <div class="row mt-3">
-        <p style="font-size: larger;">2. Elija la hora de la atención:</p>
+        
         <div id="div_horas">
             <div class="col-md-6" id="dropdown_horas_container">
 
@@ -40,7 +40,7 @@ Aqui se reserva hora
     </div>
 
     <div class="row mt-3">
-        <p style="font-size: larger;">3. Elija el médico:</p>
+        
         <form  method="post" action="{% url 'ingresar_atencion_medica' %}" id="form_reserva_atencion">
             {% csrf_token %}
             
@@ -51,7 +51,7 @@ Aqui se reserva hora
         </form>
     </div>
     
-
+    <button class="btn btn-danger" onclick="limpiaBusqueda()">Limpiar búsqueda</button>
     
 </div>
 
@@ -74,7 +74,8 @@ Aqui se reserva hora
                 dataType: 'json',
                 success: function (data) {
                     console.log("jkfdjkfjd")
-                    var dropdown2HTML = '<select class="form-control" id="dropdown_horas" style="font-size:larger">';
+                    var dropdown2HTML = '<p>2. Elija la hora de la atención:</p>' 
+                        + '<select class="form-control" id="dropdown_horas" style="font-size:larger">';
                     $.each(data.opciones, function (index, opcion) {
                         //console.log(opcion) //diccionario: {hora: lista_medicos}
                         //hora_disponible=[id, nombre, apellido]
@@ -125,7 +126,7 @@ Aqui se reserva hora
             
             
 
-            var dropdown2HTML = '<select  name="medico" class="form-control">';
+            var dropdown2HTML = '<p>3. Elija el médico:</p><select  name="medico" class="form-control">';
             medicos.forEach(function (medico) {
                 dropdown2HTML += '<option value="' + medico[0] + '">' + medico[1] + ' ' + medico[2] + '</option>';
 

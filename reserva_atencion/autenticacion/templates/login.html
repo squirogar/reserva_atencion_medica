@@ -1,0 +1,22 @@
+{% extends "autenticacion.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<h1>Inicio de Sesión</h1>
+
+
+<!--FORM-->
+<div>
+    <form action="{% url 'auth:login' %}" method="post">
+        {% csrf_token %}
+        {{form}}
+        <div class="d-flex justify-content-center ">
+            <button class="btn btn-primary" type="submit">Ingresar</button>
+        </div><!--end div button-->
+    </form>
+</div> <!--end div form-->
+
+
+{% endblock %}
