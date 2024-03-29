@@ -25,7 +25,7 @@ def ingresar(request):
             # si es correcta la info, entonces usuario != None
             if usuario is not None:
                 login(request, usuario)
-                return redirect("reservar_atencion")
+                return redirect("hosp:reservar_atencion")
             else:
                 #messages.error(request, "Error: No se encuentra el usuario")
                 print("error")
@@ -35,7 +35,7 @@ def ingresar(request):
             print("error")
             
 
-    return render(request, "login.html", context={"form": form})
+    return render(request, "autenticacion/login.html", context={"form": form})
 
 
 
@@ -43,7 +43,7 @@ def ingresar(request):
 
 
 def registro(request):
-    return render(request, "registro.html")
+    return render(request, "autenticacion/registro.html")
 
 
 

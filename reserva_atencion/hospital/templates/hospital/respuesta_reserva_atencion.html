@@ -1,0 +1,63 @@
+{% extends "main/base.html" %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'hospital/css/hospital.css' %}">
+{% endblock %}
+
+{% block title %}Resultado{% endblock %}
+
+{% block content %}
+
+{% if error %}
+    <div class="container text-center my-5">
+        <h1>Error en reserva de atención</h1>
+        <div class="divinfo my-5">
+            <p>Ha ocurrido un error en la reserva de atención. Por favor, intente nuevamente.</p>
+        </div>
+    </div>
+{% else %}
+    <div class="container text-center my-5">
+        <h1>Atención reservada</h1>
+        <div class="divinfo my-5">
+
+            <p>La información de su reserva de atención es la siguiente:</p>
+            <table class="table table-bordered table-hover my-5 border-dark">
+                <tr>
+                    <th scope="row">Id atención</th>
+                    <td>{{id}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Paciente</th>
+                    <td>{{rut}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Médico</th>
+                    <td>Dr. {{medico}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Box</th>
+                    <td>{{box}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Hora</th>
+                    <td>{{hora}} hrs.</td>
+                </tr>
+                <tr>
+                    <th scope="row">Fecha</th>
+                    <td>{{fecha}}</td>
+                </tr>
+                </tr>
+            </table>
+            
+
+            
+
+            Esta información se le ha enviado a su email <b>{{email}}</b> como respaldo.
+        </div>
+    </div>
+
+
+{% endif %}
+
+{% endblock %}

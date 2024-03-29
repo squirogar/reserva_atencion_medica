@@ -1,0 +1,56 @@
+{% extends "main/base.html" %}
+
+{% block title %}Historial{% endblock %}
+
+{% block content %}
+
+<div class="container text-center my-5">
+
+    <h1>Historial de reservas de atención</h1> 
+    
+    <div class="my-5">
+
+        <h3>Paciente: {{usuario}}</h3>
+    </div>
+    
+    {% if atenciones %}
+        <table class="table table-bordered table-hover my-5 border-dark">
+            <tr>
+                <th>Id atención</th>
+                <th>Médico</th>
+                <th>Hora</th>
+                <th>Fecha</th>
+                <th>Box</th>
+                <th>Reservada el</th>
+            </tr>
+            {% for atencion in atenciones %}
+            <tr>
+                <td>
+                    {{atencion.id}}
+                </td>
+                <td>
+                    {{atencion.medico}}
+                </td>
+                <td>
+                    {{atencion.hora_atencion}}
+                </td>
+                <td>
+                    {{atencion.fecha_atencion}}
+                </td>
+                <td>
+                    {{atencion.medico.box}}
+                </td>
+                <td>
+                    {{atencion.fecha_reserva}}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    
+    {% else %}
+    Usted no ha reservado horas médicas aún.
+    {% endif %}
+</div>
+
+
+{% endblock %}

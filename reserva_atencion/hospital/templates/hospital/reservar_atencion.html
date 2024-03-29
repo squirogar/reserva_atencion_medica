@@ -1,0 +1,85 @@
+{% extends "main/base.html" %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'hospital/css/hospital.css' %}">
+{% endblock %}
+{% block title %}Reserva{% endblock %}
+
+{% block content %}
+
+<div class="container text-center my-5">
+    <h1>Reservar una atención médica</h1>
+    
+    <h4>Día de hoy: {{hoy}}</h3>
+</div>
+
+<!-- div general -->
+<div class="container text-center mb-5">
+
+    <!-- paso 1: selección de fecha-->
+    <div>        
+        <p class="paso">1. Elija el día de la atención:</p>
+        <form  method="get" id="form_fecha">
+        <select id="dropdown_fecha" class="sel text-center form-control form-control-lg">
+            {% for dia, fecha in semana.items %}
+                <option value='{{fecha.isoformat}}'>{{dia|capfirst}}, {{fecha}} </option>
+            {% endfor %}
+        </select>
+        <input class="btn btn-primary my-3" type="submit" id="boton_buscar_horas" value="Buscar horas">
+        </form>
+
+        <div id="loading" style="display: none;"></div>
+        
+    </div>
+    <!-- fin paso 1-->
+
+
+
+
+    <!-- paso 2: selección de hora-->
+    <div>
+        
+        <div id="div_horas">
+            <div id="dropdown_horas_container">
+
+                <!-- Dropdown 2 will be inserted here -->
+                
+                
+            </div>
+        </div>
+
+    </div>
+    <!-- fin paso 2 -->
+    
+
+
+    <!-- paso 3: selección de médico-->
+    <div>
+        
+        <form  method="post" action="{% url 'hosp:ingresar_atencion_medica' %}" id="form_reserva_atencion">
+            {% csrf_token %}
+            
+            <div id="dropdown_medicos_container">
+                <!-- Dropdown 3 will be inserted here -->
+            
+            </div>
+        </form>
+    </div>
+    <!-- fin paso 3-->
+    
+
+
+    <!-- limpieza de busqueda -->
+    <button class="btn btn-danger mt-3" onclick="limpiaBusqueda()">Limpiar búsqueda</button>
+    <!-- fin limpieza-->
+    
+</div>
+<!-- end div general-->
+
+
+<script>var django_url = "{% url 'hosp:get_horas_disponibles' %}"</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="{% static 'hospital/js/reservar_atencion.js' %}"></script>
+
+
+{% endblock %}

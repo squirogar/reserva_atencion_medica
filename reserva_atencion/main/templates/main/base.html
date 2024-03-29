@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head %}{% endblock %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
@@ -25,19 +26,19 @@
                     </li>
             
                     <li class="nav-item pr-1">
-                        <a class="nav-link {% if request.path == '/atencion/reservar/' %}active{% endif %}" href="{% url 'reservar_atencion' %}">Reservar Hora</a>
+                        <a class="nav-link {% if request.path == '/atencion/reservar/' %}active{% endif %}" href="{% url 'hosp:reservar_atencion' %}">Reservar Hora</a>
                     </li>
 
                     <li class="nav-item pr-1">
-                        <a class="nav-link {% if request.path == '/atencion/historial/' %}active{% endif %}" href="{% url 'historial' %}">Historial</a>
+                        <a class="nav-link {% if request.path == '/atencion/historial/' %}active{% endif %}" href="{% url 'hosp:historial' %}">Historial</a>
                     </li>
 
                     <li class="nav-item pr-1">
-                        <a class="nav-link {% if request.path == '/atencion/medicos/' %}active{% endif %}" href="{% url 'medicos' %}">Médicos</a>
+                        <a class="nav-link {% if request.path == '/atencion/medicos/' %}active{% endif %}" href="{% url 'hosp:medicos' %}">Médicos</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/perfil/' %}active{% endif %}" href="{% url 'perfil' %}">Mis datos</a>
+                        <a class="nav-link {% if request.path == '/perfil/' %}active{% endif %}" href="{% url 'usr:perfil' %}">Mis datos</a>
                     </li>
                     
                 

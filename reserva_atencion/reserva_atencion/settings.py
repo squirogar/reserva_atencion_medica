@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     "usuarios",
     "hospital",
     "autenticacion",
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +139,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 # Le decimos a django que use el usuario custom
 AUTH_USER_MODEL = "usuarios.Usuario"
+
+
+# carga el paquete crispy-forms en bootstrap
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"

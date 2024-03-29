@@ -14,4 +14,4 @@ def perfil(request):
         print(f"usuario {usuario}")
         perfil_usuario["usuario"] = usuario
 
-    return render(request, "perfil.html", context=perfil_usuario)
+    return render(request, "usuarios/perfil.html", context=perfil_usuario)

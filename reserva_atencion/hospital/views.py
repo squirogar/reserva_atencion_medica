@@ -29,7 +29,7 @@ def historial(request):
         "atenciones": atenciones_usuario
     }
     
-    return render(request, "historial.html", context=contexto)
+    return render(request, "hospital/historial.html", context=contexto)
 
 
 @login_required(login_url="auth:login")
@@ -48,7 +48,7 @@ def reservar_atencion(request):
 
 
 
-    return render(request, "reservar_atencion.html", context=contexto)
+    return render(request, "hospital/reservar_atencion.html", context=contexto)
 
 
 
@@ -57,6 +57,7 @@ from django.http import JsonResponse
 
 @login_required(login_url="auth:login")
 def get_horas_disponibles(request):
+    print("se llamo a get_horas_disponibles")
     print("\n\n\nHORAS DISPONIBLES AJAX")
     fecha = request.GET.get('fecha')
     print(fecha)
@@ -101,7 +102,7 @@ def get_horas_disponibles(request):
 
 @login_required(login_url="auth:login")
 def ingresar_atencion_medica(request):
-    print("aloha")
+    print("se llamo a ingresar_atencion_medica")
     if request.method == "POST":
         # si es post ingresamos la atencion a la db
         fecha = request.POST["fecha"] # fecha_atencion
@@ -135,8 +136,8 @@ def ingresar_atencion_medica(request):
                 "error": False
                 }
 
-        return render(request, "respuesta_reserva_atencion.html", context=contexto)
-    return redirect("reservar_atencion")
+        return render(request, "hospital/respuesta_reserva_atencion.html", context=contexto)
+    return redirect("hosp:reservar_atencion")
 
 
 
@@ -221,4 +222,4 @@ def medicos(request):
     medicos_con_box = Medico.objects.select_related("box")
     lista_medicos = {"medicos": medicos_con_box}
 
-    return render(request, "medicos.html", lista_medicos)
+    return render(request, "hospital/medicos.html", lista_medicos)

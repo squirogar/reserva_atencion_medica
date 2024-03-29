@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+app_name = "hosp"
 urlpatterns = [
     path("historial/", views.historial, name="historial"),
     path("reservar/", views.reservar_atencion, name="reservar_atencion"),
