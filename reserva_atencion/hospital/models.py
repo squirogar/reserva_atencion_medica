@@ -53,35 +53,3 @@ class Atencion(models.Model):
     def __str__(self):
         return f"{self.usuario}, {self.medico}, {self.fecha_atencion}, {self.hora_atencion}"
 
-
-"""
-class AtencionMedica(models.Model):
-    dia = models.CharField(max_length=9)
-    hora_inicio = models.TimeField()
-    hora_termino = models.TimeField()
-    box = models.CharField(max_length=50)
-    medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
-    usuario = models.ManyToManyField(Usuario, through="ReservaAtencion")
-
-    class Meta:
-        db_table = "atencion_medica"
-        verbose_name = "atencion medica"
-        verbose_name_plural = "atenciones medica"
-
-    def __str__(self):
-        return f"{self.dia}, {self.hora_inicio}-{self.hora_termino}, box: {self.box}, dr: {self.medico}"
-
-
-
-class ReservaAtencion(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    atencionmedica = models.ForeignKey(AtencionMedica, on_delete=models.CASCADE)
-    fecha = models.DateField(auto_now_add=True)
-
-    class Meta:
-        db_table = "reserva_atencion"
-        verbose_name = "reserva de atencion"
-        verbose_name_plural = "reservas de atencion"
-
-
-"""

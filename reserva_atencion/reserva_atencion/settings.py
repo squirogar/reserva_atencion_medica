@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "autenticacion",
     'crispy_forms',
     'crispy_bootstrap5',
+    "contacto",
 ]
 
 MIDDLEWARE = [
@@ -145,3 +146,12 @@ AUTH_USER_MODEL = "usuarios.Usuario"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Cambia esto por el host de tu servidor de correo
+EMAIL_PORT = 587  # Puerto de tu servidor de correo
+EMAIL_USE_TLS = True  # True si tu servidor de correo usa TLS
+EMAIL_HOST_USER = 'quirogaseb59@gmail.com'  # Tu dirección de correo electrónico
+EMAIL_HOST_PASSWORD = 'iavo axxd cgbk oihy'  # Tu contraseña de correo electrónico

@@ -3,7 +3,9 @@ from .models import Medico, Atencion, Box
 from usuarios.models import Usuario
 from django.contrib.auth.decorators import login_required
 
-from . import utils
+
+from django.core.mail import send_mail
+from django.conf import settings
 
 from datetime import date
 import calendar
@@ -129,19 +131,39 @@ def ingresar_atencion_medica(request):
                 "id": atencion_ingresada.id,
                 "rut": request.user.username,
                 "email": request.user.email,
-                "fecha": fecha,
+                "fecha": fecha.isoformat(),
                 "hora": hora,
                 "medico": f"{medico.nombre} {medico.apellido}",
                 "box": box,
                 "error": False
                 }
+            
+            enviar_email(contexto)
 
         return render(request, "hospital/respuesta_reserva_atencion.html", context=contexto)
     return redirect("hosp:reservar_atencion")
 
 
 
+def enviar_email(contexto):
+    subject = "Atención Reservada"
+    message = "Estimado/a\n\nLa reserva de atención médica fue exitosa." 
+    + "Muchas gracias por utilizar nuestra plataforma."
+    + "\n\nLa información de su reserva de atención es la siguiente:\n" 
+    + f"Id atención: {contexto['id']}\n"
+    + f"Rut: {contexto['rut']}\n"
+    + f"Email: {contexto['email']}\n"
+    + f"Fecha: {contexto['fecha']}\n"
+    + f"Hora: {contexto['hora']}\n"
+    + f"Médico: {contexto['medico']}\n"
+    + f"Box: {contexto['box']}\n"
+    
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [contexto["email"]]
 
+    send_mail(
+        subject, message, email_from, recipient_list
+    )
 
 
 

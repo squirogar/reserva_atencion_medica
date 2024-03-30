@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from autenticacion.forms import UserCreationFormulario
+
 # Create your views here.
+
+
 
 def ingresar(request):
     form = AuthenticationForm()
@@ -43,7 +47,22 @@ def ingresar(request):
 
 
 def registro(request):
-    return render(request, "autenticacion/registro.html")
+    form = UserCreationFormulario()
+
+    if request.method == "POST":
+        print(request.POST)
+        form = UserCreationFormulario(request.POST)
+        if form.is_valid():
+            # si el formulario es valido guardalo en la base de datos  
+            usuario = form.save() 
+
+            # si se guarda en la bd, redirige al usuario y
+            # loguea automaticamente al usuario recien registrado
+            login(request, usuario)
+
+            return redirect("hosp:reservar_atencion")
+
+    return render(request, "autenticacion/registro.html", context={"form":form})
 
 
 
