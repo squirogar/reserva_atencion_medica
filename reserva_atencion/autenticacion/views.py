@@ -1,18 +1,20 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import AuthenticationForm
+#from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from autenticacion.forms import UserCreationFormulario
+from autenticacion.forms import UserCreationFormulario, LoginFormulario
+from django.contrib import messages
 
 # Create your views here.
 
 
 
 def ingresar(request):
-    form = AuthenticationForm()
+    form = LoginFormulario()#AuthenticationForm()
     if request.method == "POST":
         # guardamos la data enviada por el usuario
-        form = AuthenticationForm(request, request.POST)
+        form = LoginFormulario(request, request.POST)#AuthenticationForm(request, request.POST)
+
 
         # si el formulario es valido
         if form.is_valid():
@@ -31,11 +33,14 @@ def ingresar(request):
                 login(request, usuario)
                 return redirect("hosp:reservar_atencion")
             else:
-                #messages.error(request, "Error: No se encuentra el usuario")
+                messages.error(request, "Error: No se encuentra el usuario")
                 print("error")
                 
         else:
-            #messages.error(request, "Error: Datos incorrectos")
+            messages.error(
+                request, 
+                "Error: Datos incorrectos."
+            )
             print("error")
             
 
@@ -61,6 +66,9 @@ def registro(request):
             login(request, usuario)
 
             return redirect("hosp:reservar_atencion")
+        else:
+            messages.error(request, "Error: los datos ingresados presentan errores.")
+            print("error")
 
     return render(request, "autenticacion/registro.html", context={"form":form})
 
