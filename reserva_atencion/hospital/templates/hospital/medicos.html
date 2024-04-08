@@ -1,11 +1,16 @@
 {% extends "main/base.html" %}
-
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'hospital/css/hospital.css' %}">
+{% endblock %}
 {% block title %}Médicos{% endblock %}
 
 {% block content %}
 
+<div class="container text-center">
 
-<h1>Médicos</h1>
+    <h1>Médicos</h1>
+</div>
 
 {% if medicos %}
 
@@ -15,7 +20,9 @@
         <div class="card mb-3">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="..." class="img-fluid rounded-start" alt="...">
+                    {% if medico.imagen %}
+                        <img src="{{ medico.imagen.url }}" class="imagenmedico img-fluid rounded-start" alt="{{medico}}">
+                    {% endif %}
                 </div>
 
                 <div class="col-md-8">

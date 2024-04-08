@@ -31,4 +31,9 @@
       transform: rotate(360deg);
     }
   }
-  
+
+
+.imagenmedico {
+  width: 200px;
+  height: 200px;
+}

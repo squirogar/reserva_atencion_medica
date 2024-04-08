@@ -98,6 +98,8 @@ function setListenerBoton(data) {
         
         var fecha_sel = document.getElementById("dropdown_fecha").value;
         var hora_sel = document.getElementById("dropdown_horas").value;
+        //alert(fecha_sel);
+        //alert(hora_sel);
         dropdown2HTML += '</select><input type="hidden" name="fecha" value="' 
             + fecha_sel + '"/><input type="hidden" name="hora" value="' 
             + hora_sel + '" /><input class="btn btn-primary my-3" type="submit" value="Reservar atencion">';

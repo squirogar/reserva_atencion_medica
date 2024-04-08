@@ -34,13 +34,23 @@ def historial(request):
     return render(request, "hospital/historial.html", context=contexto)
 
 
+
+
+
 @login_required(login_url="auth:login")
 def reservar_atencion(request):
-    # reserva atencion
 
-    fechas_semana = get_semana(2024, 3, 20)
+    habilitado_para_reservar(request.user.username)
 
-    print(fechas_semana)
+
+    # obtenemos los días restantes de la semana
+    fechas_semana = get_semana(2024, 4,1)
+    print("\n\nfechas_semana: ", fechas_semana, "\n\n")
+
+    ##
+    limpia_semana(fechas_semana)
+
+    ##
 
 
     contexto = {
@@ -51,6 +61,39 @@ def reservar_atencion(request):
 
 
     return render(request, "hospital/reservar_atencion.html", context=contexto)
+
+
+
+
+
+def limpia_semana(semana):
+    pass
+
+
+
+def habilitado_para_reservar(usuario):
+    # obtenemos el id del usuario conectado
+    id_usuario = Usuario.objects.get(username=usuario).id
+    print("id_usuario ", id_usuario)
+
+    # ultima atencion del usuario conectado
+    atenciones_usuario_conectado = Atencion.objects.filter(usuario_id=id_usuario)
+    
+    if atenciones_usuario_conectado:
+        ultima_atencion = atenciones_usuario_conectado.latest("fecha_reserva")
+        print("ultima atencion usuario", ultima_atencion.fecha_reserva, type(ultima_atencion.fecha_reserva))
+        print(ultima_atencion.fecha_reserva.year, ultima_atencion.fecha_reserva.month, ultima_atencion.fecha_reserva.day)
+        print(ultima_atencion.fecha_reserva.date(), type(ultima_atencion.fecha_reserva.date()))
+        print(date.today())
+
+        if  date.today() == ultima_atencion.fecha_reserva.date():
+            print("iguales")
+            return False
+        
+
+    return True
+
+
 
 
 
@@ -131,7 +174,7 @@ def ingresar_atencion_medica(request):
                 "id": atencion_ingresada.id,
                 "rut": request.user.username,
                 "email": request.user.email,
-                "fecha": fecha.isoformat(),
+                "fecha": fecha,
                 "hora": hora,
                 "medico": f"{medico.nombre} {medico.apellido}",
                 "box": box,
@@ -147,16 +190,16 @@ def ingresar_atencion_medica(request):
 
 def enviar_email(contexto):
     subject = "Atención Reservada"
-    message = "Estimado/a\n\nLa reserva de atención médica fue exitosa." 
-    + "Muchas gracias por utilizar nuestra plataforma."
-    + "\n\nLa información de su reserva de atención es la siguiente:\n" 
-    + f"Id atención: {contexto['id']}\n"
-    + f"Rut: {contexto['rut']}\n"
-    + f"Email: {contexto['email']}\n"
-    + f"Fecha: {contexto['fecha']}\n"
-    + f"Hora: {contexto['hora']}\n"
-    + f"Médico: {contexto['medico']}\n"
-    + f"Box: {contexto['box']}\n"
+    message = ("Estimado/a\n\nLa reserva de atención médica fue exitosa." 
+    "Muchas gracias por utilizar nuestra plataforma."
+    "\n\nLa información de su reserva de atención es la siguiente:\n" 
+    f"Id atención: {contexto['id']}\n"
+    f"Rut: {contexto['rut']}\n"
+    f"Email: {contexto['email']}\n"
+    f"Fecha: {contexto['fecha']}\n"
+    f"Hora: {contexto['hora']}\n"
+    f"Médico: {contexto['medico']}\n"
+    f"Box: {contexto['box']}\n")
     
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [contexto["email"]]

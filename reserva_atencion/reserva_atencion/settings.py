@@ -117,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Santiago'
 
 USE_I18N = True
 
@@ -154,8 +154,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  # Cambia esto por el host de tu servidor de correo
 EMAIL_PORT = 587  # Puerto de tu servidor de correo
 EMAIL_USE_TLS = True  # True si tu servidor de correo usa TLS
-EMAIL_HOST_USER = ''  # Tu dirección de correo electrónico
-EMAIL_HOST_PASSWORD = ''  # Tu contraseña de correo electrónico
+EMAIL_HOST_USER = 'cuenta.prueba.dev15@gmail.com'  # Tu dirección de correo electrónico
+EMAIL_HOST_PASSWORD = 'hdgy ztib tmzk rqib'  # Tu contraseña de correo electrónico
 
 
 # redefinimos los tags para utilizar bootstrap
@@ -166,3 +166,7 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+# expira la sesion
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 6000 # 10 minutos de session

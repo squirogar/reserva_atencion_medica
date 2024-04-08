@@ -22,7 +22,8 @@
         <form  method="get" id="form_fecha">
         <select id="dropdown_fecha" class="sel text-center form-control form-control-lg">
             {% for dia, fecha in semana.items %}
-                <option value='{{fecha.isoformat}}'>{{dia|capfirst}}, {{fecha}} </option>
+            
+                <option value='{{fecha.isoformat}}'>{{dia|capfirst}}, {{fecha}}</option>
             {% endfor %}
         </select>
         <input class="btn btn-primary my-3" type="submit" id="boton_buscar_horas" value="Buscar horas">
