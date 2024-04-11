@@ -14,12 +14,11 @@ $(document).ajaxStop(function(){
 
 
 $(document).ready(function () {
-    console.log("jio")
     
     // formulario fechas
     $('#form_fecha').submit(function (e) {
         e.preventDefault();
-        console.log(django_url);
+
         console.log($('#dropdown_fecha').val());
         $.ajax({
             url: django_url,//"{% url 'hosp:get_horas_disponibles' %}", // La URL de tu vista de Django que manejará la solicitud AJAX
@@ -31,10 +30,8 @@ $(document).ready(function () {
             success: function (data) {
                 console.log("success");
                 var dropdown2HTML = '<p class="paso">2. Elija la hora de la atención:</p>' 
-                    + '<select class="sel text-center form-control form-control-lg" id="dropdown_horas"';
+                    + '<select class="sel text-center form-control form-control-lg" id="dropdown_horas">';
                 $.each(data.opciones, function (index, opcion) {
-                    //console.log(opcion) //diccionario: {hora: lista_medicos}
-                    //hora_disponible=[id, nombre, apellido]
                     dropdown2HTML += '<option value="' + opcion.hora + '">' + opcion.hora + '</option>';
                 });
                 
@@ -98,8 +95,7 @@ function setListenerBoton(data) {
         
         var fecha_sel = document.getElementById("dropdown_fecha").value;
         var hora_sel = document.getElementById("dropdown_horas").value;
-        //alert(fecha_sel);
-        //alert(hora_sel);
+
         dropdown2HTML += '</select><input type="hidden" name="fecha" value="' 
             + fecha_sel + '"/><input type="hidden" name="hora" value="' 
             + hora_sel + '" /><input class="btn btn-primary my-3" type="submit" value="Reservar atencion">';

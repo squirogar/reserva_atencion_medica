@@ -3,6 +3,22 @@ from django.core.validators import MinLengthValidator
 from usuarios.models import Usuario
 # Create your models here.
 
+
+class Box(models.Model):
+    nombre = models.CharField(max_length=10)
+    #medico = models.OneToOneField(Medico, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        db_table = "boxes"
+        verbose_name = "box"
+        verbose_name_plural = "boxes"
+
+    def __str__(self):
+        return self.nombre
+    
+    
+
+
 class Medico(models.Model):
     rut = models.CharField(max_length=10, validators=[MinLengthValidator(10)], unique=True)
     nombre = models.CharField(max_length=150)
@@ -10,6 +26,7 @@ class Medico(models.Model):
     especialidad = models.CharField(max_length=200)
     imagen = models.ImageField(upload_to="hospital/medicos", null=True, blank=True)
     usuario = models.ManyToManyField(Usuario, blank=True, through="Atencion")
+    box = models.OneToOneField(Box, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         db_table = "medicos"
@@ -21,17 +38,7 @@ class Medico(models.Model):
         return f"{self.nombre} {self.apellido}"
 
 
-class Box(models.Model):
-    nombre = models.CharField(max_length=10)
-    medico = models.OneToOneField(Medico, on_delete=models.CASCADE)
 
-    class Meta:
-        db_table = "boxes"
-        verbose_name = "box"
-        verbose_name_plural = "boxes"
-
-    def __str__(self):
-        return self.nombre
 
 
 class Atencion(models.Model):
