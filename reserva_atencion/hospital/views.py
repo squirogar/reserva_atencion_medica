@@ -152,11 +152,11 @@ def habilitado_para_reservar(usuario):
 
             if hoy.date() < fecha_atencion_ultima_reserva: 
                 print("hoy.date < fecha_atencion")
-                codigo = 2
+                codigo = 0#2
 
             elif hoy.date() == fecha_atencion_ultima_reserva and hora_hoy <= hora_atencion_ultima_reserva:
                 print("hoy.date == fecha y hoy.hora < hora")
-                codigo = 2
+                codigo = 0#2
 
             else:
                 print("hoy.date > fecha o hoy.hora > hora")

@@ -8,7 +8,7 @@
 
 {% block content %} 
 
-<div class="container text-center my-3" id="principal">
+<div class="container text-center my-5" id="principal">
     <h1>Contacto</h1>
 
     {% if messages %}
@@ -19,7 +19,7 @@
         </div>
     {% endif %}
 
-    <form action="{% url 'cont:contacto' %}", method="POST">
+    <form action="{% url 'cont:contacto' %}", method="POST" class="my-5">
         {% csrf_token %}
         {{formulario|crispy}}
         <div class="d-flex justify-content-center ">
