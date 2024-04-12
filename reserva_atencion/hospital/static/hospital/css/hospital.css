@@ -38,7 +38,7 @@
   height: 200px;
 }
 
-#unable {
+.unable {
   color:red;
   font-size: x-large;
 }

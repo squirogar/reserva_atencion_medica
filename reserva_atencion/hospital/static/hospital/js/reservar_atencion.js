@@ -21,7 +21,7 @@ $(document).ready(function () {
 
         console.log($('#dropdown_fecha').val());
         $.ajax({
-            url: django_url,//"{% url 'hosp:get_horas_disponibles' %}", // La URL de tu vista de Django que manejará la solicitud AJAX
+            url: django_url, //"{% url 'hosp:get_horas_disponibles' %}"
             type: "get",
             data: {
                 'fecha': $('#dropdown_fecha').val(),
@@ -29,6 +29,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 console.log("success");
+                console.log("DATA", data)
                 var dropdown2HTML = '<p class="paso">2. Elija la hora de la atención:</p>' 
                     + '<select class="sel text-center form-control form-control-lg" id="dropdown_horas">';
                 $.each(data.opciones, function (index, opcion) {
@@ -49,7 +50,7 @@ $(document).ready(function () {
 
             },
             error : function(jqXHR, status, error) {
-                alert('Disculpe, existió un problema');
+                alert('Disculpe, ocurrió un problema');
                 console.log(status);
                 console.log(error);
             }, 

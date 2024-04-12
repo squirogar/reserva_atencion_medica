@@ -11,14 +11,21 @@
 <div class="container text-center my-5">
     <h1>Reservar una atención médica</h1>
     
-    <h4>Día de hoy: {{hoy}}</h3>
+    {% if hoy %}
+        <h4>Día de hoy: {{hoy}}</h4>
+    {% endif %}    
 </div>
 
-{% if error %}
+{% if codigo == 1 %}
     <div class="container text-center">
-        <p id="unable">Ya ha reservado una atención hoy. Por favor, vuelva mañana.</p>
+        <p class="unable">El sistema de reserva de atenciones médicas se encuentra cerrado. Se abre el día domingo a las 17:00.</p>
     </div>
 
+{% elif codigo == 2 %}
+    <div class="container text-center">
+        <p class="unable">No puede reservar una atención médica, ya que usted ya tiene una atención reservada para el día {{fecha_ultima_atencion}} a las {{hora_ultima_atencion}} hrs.</p>
+        <p class="unable">Debe esperar que expire dicha atención médica para volver a reservar.</p>
+    </div>
 
 {% else %}
     <!-- div general -->

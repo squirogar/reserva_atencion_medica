@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
 
-from datetime import date
+from datetime import date, time
 import calendar
 import locale
 from django.utils import timezone
@@ -47,122 +47,127 @@ def reservar_atencion(request):
     
     contexto = {}
     
-    # preguntamos si el usuario puede reservar atencion
-    if habilitado_para_reservar(request.user.username):
+    info = habilitado_para_reservar(request.user.username)
+    
+    contexto["codigo"] = info["codigo"]
+
+    
+    if info["codigo"] == 0: # si el usuario esta habilitado
 
         # obtenemos los días restantes de la semana
-        dia_de_hoy = timezone.localdate(timezone.now()) #date.today()
-        print("dia de hoy", dia_de_hoy)
+        dia_de_hoy = timezone.localtime(timezone.now())
         fechas_semana = get_semana(dia_de_hoy.year, dia_de_hoy.month, dia_de_hoy.day)
-        print("-fechas_semana: ", fechas_semana, "\n")
 
-        fechas_semana = limpia_semana(fechas_semana)
+        # limpiamos la semana
+        fechas_semana["semana"] = limpia_semana(fechas_semana["semana"], dia_de_hoy)
 
-
+        # guardamos los datos de la semana en el contexto
         contexto["hoy"] = fechas_semana["hoy"]
         contexto["semana"] = fechas_semana["semana"]
-        contexto["error"] = False
-        
-    else:
-        contexto["error"] = True
+    
+    elif info["codigo"] == 2:
+        # si el usuario no esta habilitado porque ya tiene una reserva activa
+        # guardamos la fecha y hora de la ultima atencion reservada en el contexto
+        contexto["fecha_ultima_atencion"] = info["ultima_atencion"].fecha_atencion.strftime("%d-%m-%Y")
+        contexto["hora_ultima_atencion"] = info["ultima_atencion"].hora_atencion.strftime("%H:%M")
 
+    
     return render(request, "hospital/reservar_atencion.html", context=contexto)
 
 
 
 
 
-def limpia_semana(semana):
+def limpia_semana(semana, hoy):
+    print("\n\nLimpia semana\n")
+    print(semana)
     # eliminamos sabado y domingo
     del semana["sábado"]
     del semana["domingo"]
 
-    print("semana luego de la eliminacion ", semana)
-
     # si consideramos el dia de hoy para pedir hora
-    hoy = timezone.localtime(timezone.now())
-    hora_hoy = hoy.time().strftime("%H:%M")    
+    hora_hoy = hoy.time()   
 
     numero_dia_hoy = calendar.weekday(hoy.year, hoy.month, hoy.day) # numero_dia actual: [0-6]
     dia = calendar.day_name[numero_dia_hoy] # dia de la semana que es hoy
 
-    print(numero_dia_hoy, dia)
+    print(numero_dia_hoy, dia, hora_hoy)
 
     if semana.get(dia, None): # se verifica que hoy no sea domingo, ya que domingo no se atiende
-        if hora_hoy >= "7:30": # no se puede reservar atencion para un mismo dia despues de las 7:30
-            del semana["dia"]
+        #print(semana[dia], hora_hoy, hora_hoy >= time(7, 30, 0))
+        if hora_hoy >= time(7, 30, 0): # no se puede reservar atencion para un mismo dia despues de las 7:30
+            del semana[dia]
     
+    print("semana luego de la eliminacion ", semana)
+
     return semana
 
 
 
 def habilitado_para_reservar(usuario):
     """
-    Retorna True si el usuario conectado puede reservar una atencion.
-    Caso contrario, retorna False.
-
-    Un usuario no puede reservar una atención si: 
-    - si es sábado, o domingo antes de las 17:00
-    - si ya reservó una atención para la semana actual y dicha reserva
-    aún no expira (fecha y hora de hoy <= fecha y hora de atencion).
-    Por ejemplo, si el usuario reserva para un día martes a las 8:00,
-    a partir de las 8:01 de ese martes puede volver a reservar.
-
-    Con esto se evita que un usuario pueda hacer múltiples reservas.
+    Retorna un entero que indica si el usuario conectado puede reservar 
+    una atencion. Este entero puede tener uno de estos 3 valores:
+    - 0: el usuario puede reservar una atención
+    - 1: el usuario no puede reservar una atención, ya que es sábado o domingo 
+    antes de las 17:00.
+    - 2: el usuario no puede reservar una atención, ya que tiene una reserva
+    de atención que aún no expira (fecha y hora de hoy <= fecha y hora de atencion). 
     
     """
     print("\nHabilitado para reservar\n")
 
+    codigo = -1
+    ultima_atencion_reservada = None
+
     hoy = timezone.localtime(timezone.now())
-    hora_hoy = hoy.time().strftime("%H:%M")
-    
+    hora_hoy = hoy.time()
     dia_semana = calendar.weekday(hoy.year, hoy.month, hoy.day) # [0-6]
     
     # si es sabado, o (domingo y la hora < 17:00)
-    if dia_semana == 5 or (dia_semana == 6 and hora_hoy < "17:00"): 
-        return False
+    if dia_semana == 5 or (dia_semana == 6 and hora_hoy < time(17, 00, 0)): 
+        print("es sabado o domingo < 17:00")
+        codigo = 1
 
-    # comprobamos si el usuario ya tiene una reserva activa, o sea,
-    # aun no expira la reserva de atencion.
-    id_usuario_conectado = Usuario.objects.get(username=usuario).id
-    print("id_usuario ", id_usuario_conectado)
+    else:
 
-    atenciones_usuario_conectado = Atencion.objects.filter(usuario_id=id_usuario_conectado)
-    print(atenciones_usuario_conectado)
+        # comprobamos si el usuario ya tiene una reserva activa, o sea,
+        # aun no expira la reserva de atencion.
+        id_usuario_conectado = Usuario.objects.get(username=usuario).id
 
-    if atenciones_usuario_conectado: # si tiene atenciones
-        ultima_atencion_reservada = atenciones_usuario_conectado.latest("fecha_reserva")
-        
-        #### borrar #####
-        print("ultima atencion usuario", ultima_atencion_reservada)
-        #print("fecha recuperada por django", ultima_atencion.fecha_reserva, type(ultima_atencion.fecha_reserva))
-        #print("fecha con localdate ", timezone.localtime(ultima_atencion.fecha_reserva))
+        atenciones_usuario_conectado = Atencion.objects.filter(usuario_id=id_usuario_conectado)
+        print(atenciones_usuario_conectado)
 
-        #print(ultima_atencion.fecha_reserva.year, ultima_atencion.fecha_reserva.month, ultima_atencion.fecha_reserva.day)
-        #print(ultima_atencion.fecha_reserva.date(), type(ultima_atencion.fecha_reserva.date()))
-        #print("date.today()", date.today(), "localdate(timezone.now())", timezone.localdate(timezone.now()))
+        if atenciones_usuario_conectado: # si tiene atenciones
+            ultima_atencion_reservada = atenciones_usuario_conectado.latest("fecha_reserva")
+                        
+            print("ultima atencion usuario", ultima_atencion_reservada)
+            
+            fecha_atencion_ultima_reserva = ultima_atencion_reservada.fecha_atencion
+            hora_atencion_ultima_reserva = ultima_atencion_reservada.hora_atencion
+            
 
-        fecha_atencion_ultima_reserva = ultima_atencion_reservada.fecha_atencion
-        hora_atencion_ultima_reserva = ultima_atencion_reservada.hora_atencion
+            # preguntamos si aun no ha expirado la reserva
+            hora_hoy = hoy.time().replace(microsecond=0)
 
-        print(fecha_atencion_ultima_reserva, hora_atencion_ultima_reserva, hoy.date(), hoy.time())
-        ##########
+            if hoy.date() < fecha_atencion_ultima_reserva: 
+                print("hoy.date < fecha_atencion")
+                codigo = 2
 
-        # preguntamos si aun no ha expirado la reserva
-        hora_hoy = hoy.time().replace(microsecond=0)
+            elif hoy.date() == fecha_atencion_ultima_reserva and hora_hoy <= hora_atencion_ultima_reserva:
+                print("hoy.date == fecha y hoy.hora < hora")
+                codigo = 2
 
-        if hoy.date() < fecha_atencion_ultima_reserva: 
-            return False
-        elif hoy.date() == fecha_atencion_ultima_reserva and hora_hoy <= hora_atencion_ultima_reserva:
-            return False
-        else:
-            return True
-        #if timezone.localdate(timezone.now()) == fecha_ultima_reserva: # si ya hizo una reserva hoy
-        #if date.today() == ultima_atencion.fecha_reserva.date(): # si ya hizo una reserva hoy
-        #    print("iguales")
-        #    return False
-        
-    return True
+            else:
+                print("hoy.date > fecha o hoy.hora > hora")
+                codigo = 0
+            
+
+        else: # si no tiene atenciones
+            codigo = 0
+
+
+    return {"codigo": codigo, "ultima_atencion": ultima_atencion_reservada}
 
 
 
@@ -243,7 +248,7 @@ def ingresar_atencion_medica(request):
         hora_atencion = request.POST["hora"]
         id_usuario_conectado = Usuario.objects.get(username=request.user.username).id
         id_medico = request.POST["medico"]
-        fecha_reserva = timezone.localtime(timezone.now()) #date.today()
+        fecha_reserva = timezone.localtime(timezone.now())
 
         print("datos antes de la insercion")
         print(fecha_atencion, hora_atencion, id_usuario_conectado, id_medico, fecha_reserva)

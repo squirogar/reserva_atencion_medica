@@ -1,11 +1,14 @@
 {% extends "main/base.html" %}
 {% load crispy_forms_tags %}
-
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'contacto/css/contacto.css' %}">
+{% endblock %}
 {% block title %}Contacto{% endblock %}
 
 {% block content %} 
 
-<div class="container text-center">
+<div class="container text-center my-3" id="principal">
     <h1>Contacto</h1>
 
     {% if messages %}
