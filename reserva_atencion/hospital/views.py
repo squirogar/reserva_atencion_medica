@@ -59,11 +59,15 @@ def reservar_atencion(request):
         fechas_semana = get_semana(dia_de_hoy.year, dia_de_hoy.month, dia_de_hoy.day)
 
         # limpiamos la semana
-        fechas_semana["semana"] = limpia_semana(fechas_semana["semana"], dia_de_hoy)
+        semana_limpia = limpia_semana(fechas_semana["semana"], dia_de_hoy)
 
-        # guardamos los datos de la semana en el contexto
-        contexto["hoy"] = fechas_semana["hoy"]
-        contexto["semana"] = fechas_semana["semana"]
+        if semana_limpia != {}:
+            # guardamos los datos de la semana en el contexto
+            contexto["hoy"] = fechas_semana["hoy"]
+            contexto["semana"] = semana_limpia
+
+        else:
+            contexto["codigo"] = 1
     
     elif info["codigo"] == 2:
         # si el usuario no esta habilitado porque ya tiene una reserva activa
@@ -152,11 +156,11 @@ def habilitado_para_reservar(usuario):
 
             if hoy.date() < fecha_atencion_ultima_reserva: 
                 print("hoy.date < fecha_atencion")
-                codigo = 0#2
+                codigo = 2
 
             elif hoy.date() == fecha_atencion_ultima_reserva and hora_hoy <= hora_atencion_ultima_reserva:
                 print("hoy.date == fecha y hoy.hora < hora")
-                codigo = 0#2
+                codigo = 2
 
             else:
                 print("hoy.date > fecha o hoy.hora > hora")

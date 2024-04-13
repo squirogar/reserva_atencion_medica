@@ -18,7 +18,7 @@
 
 {% if codigo == 1 %}
     <div class="container text-center">
-        <p class="unable">El sistema de reserva de atenciones médicas se encuentra cerrado. Se abre el día domingo a las 17:00.</p>
+        <p class="unable">Ya no quedan más horas disponibles, por lo que el sistema de reserva de atenciones médicas se encuentra cerrado. Vuelva el día domingo a las 17:00 hrs.</p>
     </div>
 
 {% elif codigo == 2 %}
@@ -91,6 +91,24 @@
         
     </div>
     <!-- end div general-->
+
+
+
+    
+<script>
+    function getFeriados(data){
+        console.log(data);
+
+
+           
+    }
+    
+</script>
+
+<script src="https://apis.digital.gob.cl/fl/feriados?callback=getFeriados"></script>
+
+
+
 
 {% endif %}
 
