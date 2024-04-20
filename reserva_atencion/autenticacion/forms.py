@@ -1,6 +1,6 @@
 import re
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
 from usuarios.models import Usuario
 
 class UserCreationFormulario(UserCreationForm):
@@ -43,6 +43,12 @@ class UserCreationFormulario(UserCreationForm):
 
 
     def clean_username(self):
+        """
+        clean() llama a este método para verificar que username (rut en este caso)
+        cumple con el formato.
+
+        Puede usarse para cualquier campo, usar: clean_campo().
+        """
         rut = self.cleaned_data["username"]
 
         print(type(rut))
@@ -77,6 +83,12 @@ class LoginFormulario(AuthenticationForm):
     
 
     def clean_username(self):
+        """
+        clean() llama a este método para verificar que username (rut en este caso)
+        cumple con el formato.
+
+        Puede usarse para cualquier campo, usar: clean_campo().
+        """
         rut = self.cleaned_data["username"]
 
         print(type(rut))
@@ -93,4 +105,3 @@ class LoginFormulario(AuthenticationForm):
         # this method didn't change it.
         return rut
     
-

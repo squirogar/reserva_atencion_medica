@@ -24,7 +24,7 @@
         {% endif %}
         
         <!--FORM-->
-        <div class="container my-5 formulario w-25 border border-primary p-3">
+        <div  id="divlogin" class="container my-5 formulario border border-primary p-3">
             <form action="{% url 'auth:login' %}" method="post">
                 {% csrf_token %}
                 {{form|crispy}}
@@ -34,8 +34,13 @@
             </form>
         </div> <!--end div form-->
         
-        <a href="{% url 'auth:registro' %}"> <button class="btn btn-outline-secondary">Registro</button></a>
-        
+        <div>
+            <a href="{% url 'auth:registro' %}"> <button class="btn btn-outline-secondary">Registro</button></a>
+        </div>
+        <div class="my-3">
+
+            <a href="{% url 'auth:password_reset' %}">Olvidé la contraseña</a>
+        </div>
     </div>
 
 

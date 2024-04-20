@@ -169,4 +169,4 @@ MESSAGE_TAGS = {
 
 # expira la sesion
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 6000 # 10 minutos de session
+SESSION_COOKIE_AGE = 60000 # 10 minutos de session
