@@ -1,0 +1,46 @@
+
+<!-- Modal email -->
+<div class="modal fade" id="emailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="emailModalLabel">Cambiar Email</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+    
+                <form method="post" id="formCambiaEmail">
+                
+                <div>
+                    <p class="d-block">
+                        Escriba en la casilla su nuevo email. Presione "Guardar" para confirmar los cambios.
+                    </p>
+                    
+                    <div class="d-block text-center">
+                        {% csrf_token %}
+                        {{form_cambio_email}}
+                    </div>
+
+                    <div id="loadingEmail" style="display: none;"></div>
+
+                    <div class="d-block text-center" id="divMensaje">
+                        <!-- acá debería estar el mensaje que indica éxito/fracaso de la operación -->
+                    </div>
+                                        
+                </div><!--end div button-->
+                
+            </div>
+            <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit" id="btnGuardarEmail">Guardar</button>
+                    
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="limpiaMensaje()">Cerrar</button>
+                    
+                </div>
+            
+                </form>
+          
+        </div>
+        </div>
+</div>
+
+<script>const cambiaEmailUrl = "{% url 'usr:cambia_email' %}"</script>

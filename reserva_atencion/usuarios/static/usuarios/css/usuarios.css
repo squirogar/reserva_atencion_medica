@@ -1,0 +1,16 @@
+
+#loadingEmail{
+    height: 50px;
+    width: 50px;
+    border: 6px solid;
+    border-color:black white;
+    border-radius: 50%;
+    animation: spin 1.3s linear infinite;
+    margin: auto;
+  }
+  
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

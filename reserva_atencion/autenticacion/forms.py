@@ -1,6 +1,6 @@
 import re
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from usuarios.models import Usuario
 
 class UserCreationFormulario(UserCreationForm):
@@ -27,10 +27,9 @@ class UserCreationFormulario(UserCreationForm):
 
     def save(self, commit=True):
         """
-        Redefine el método save, para que evite guardar inmediatamente los
-        datos del usuario nuevo en la base de datos.
+        Redefine el método save de UserCreationForm.
         Este método guardará los campos username (rut), contraseña, email,
-        direccion.
+        direccion, además de los que ya se guardan por defecto.
         """
         user = super(UserCreationForm, self).save(commit=False)
         user.email = self.cleaned_data["email"]

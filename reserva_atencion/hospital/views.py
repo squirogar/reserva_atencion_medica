@@ -3,6 +3,7 @@ from .models import Medico, Atencion, Box
 from usuarios.models import Usuario
 from django.contrib.auth.decorators import login_required
 
+from django.http import JsonResponse
 
 from django.core.mail import send_mail
 from django.conf import settings
@@ -177,7 +178,7 @@ def habilitado_para_reservar(usuario):
 
 
 
-from django.http import JsonResponse
+
 
 @login_required(login_url="auth:login")
 def get_horas_disponibles(request):

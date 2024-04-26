@@ -1,69 +1,104 @@
 {% extends "main/base.html" %}
-
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'usuarios/css/usuarios.css' %}">
+{% endblock %}
 {% block title %}Mis Datos{% endblock %}
 
 {% block content %}
-aqui va el perfil de usuario
+
+<!-- modal que permite la modificación de datos -->
+<div>
+    {% include "usuarios/modificar_datos_modal.html" %}  
+</div>
+<!-- end div modal modificación de datos -->
 
 
-<div class="text-center" style="width: 50%; margin: auto;">
+<!-- modal que permite cambiar email -->
+<div>
+    {% include "usuarios/cambia_email_modal.html" %}  
+</div>
+<!-- end div modal cambia email -->
+
+
+<!-- modal que permite cambiar password -->
+<div>
+    {% include "usuarios/cambia_password_modal.html" %}  
+</div>
+<!-- end div modal cambia password -->
+
+
+{% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+
+
+<div class="text-center my-5" style="width: 50%; margin: auto;">
     <h1>Datos de {{usuario.first_name}} {{usuario.last_name}}</h1>
     <table class="table table-hover my-5">
         <tbody>
             <tr>
                 <th scope="row" class="table-info">Rut</th>
-                <td>{{usuario.username}}</td>        
+                <td id="rut">{{usuario.username}}</td>        
             </tr>
             <tr>
                 <th scope="row" class="table-info">Nombre</th>
-                <td>{{usuario.first_name}}</td>
+                <td id="nombre">{{usuario.first_name}}</td>
             </tr>
             <tr>
                 <th scope="row" class="table-info">Apellido</th>
-                <td colspan="2">{{usuario.last_name}}</td>
+                <td id="apellido">{{usuario.last_name}}</td>
             </tr>
             <tr>
                 <th scope="row" class="table-info">E-mail</th>
-                <td colspan="2">{{usuario.email}}</td>
+                <td id="email">{{usuario.email}}</td>
             </tr>
             <tr>
                 <th scope="row" class="table-info">Dirección</th>
-                <td colspan="2">{{usuario.direccion}}</td>
+                <td id="direccion">{{usuario.direccion}}</td>
             </tr>
             <tr>
                 <th scope="row" class="table-info">Última conexión</th>
-                <td colspan="2">{{usuario.last_login}}</td>
+                <td id="ultimaConexion">{{usuario.last_login}}</td>
             </tr>
         </tbody>
       </table>
     
     
-    <!--button modificar datos. Activa la modal-->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modificarDatosModal">
         Modificar datos
     </button>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#emailModal">
+        Cambiar Email
+    </button>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cambiaPasswordModal">
+        Cambiar contraseña
+    </button>
+
+    
+    <a href="{% url 'usr:cambia_password' %}"><button type="button" class="btn btn-primary">Cambiar contraseña</button></a>
+    
+
 </div>
 
-<!-- -->
 
-  
-<!-- Modal -->
-<div class="modal fade" id="modificarDatosModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modificarDatosModalLabel">Modificar datos</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            aqui va el formulario
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Guardar cambios</button>
-            </div>
-        </div>
-    </div>
-</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="{% static 'usuarios/js/cambiaEmail.js' %}"></script>
+<script src="{% static 'usuarios/js/modificaDatos.js' %}"></script>
+<script src="{% static 'usuarios/js/cambiaPassword.js' %}"></script>
+
+
+
+
+
+
 
 {% endblock %}
