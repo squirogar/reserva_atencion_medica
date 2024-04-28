@@ -1,13 +1,13 @@
 $(document).ajaxStart(function(){
     console.log("muestra")
-    document.getElementById("loadingEmail").style.display = "block"; //display:block
+    document.getElementById("loading").style.display = "block"; //display:block
     document.getElementById("btnGuardarEmail").disabled = true;
 
 });
 
 $(document).ajaxStop(function(){
     console.log("oculta")
-    document.getElementById("loadingEmail").style.display = "none";//$('#loadingEmail').hide(); //display:none
+    document.getElementById("loading").style.display = "none";//$('#loadingEmail').hide(); //display:none
     document.getElementById("btnGuardarEmail").disabled = false;
 });
 
@@ -22,6 +22,9 @@ $(document).ready(function () {
         e.preventDefault();
         const formData = $("#formCambiaEmail").serialize(); //para que pueda enviarse al servidor
         
+        limpiaMensajeEmail();
+        //document.getElementById("divMensajeEmail").textContent = "";
+        
         $.ajax({
             url: cambiaEmailUrl, //"{% url 'usr:cambia_email' %}"
             type: "post",
@@ -30,11 +33,11 @@ $(document).ready(function () {
             success: function (response) {
                 console.log("success");
                 
-
                 
-                const divMensaje = document.getElementById("divMensaje");
+                const divMensaje = document.getElementById("divMensajeEmail");
                 const parrafo = document.createElement("p");
                 let mensaje = null;
+                let color = null;
 
                 if (response["cambio_efectivo"]) {
                     //insertar dentro de la modal el mensaje de exito
@@ -43,17 +46,20 @@ $(document).ready(function () {
                     //reemplazar los datos por la nueva data
                     document.getElementById("email").textContent = response["datos"]["email"];
 
+                    color = "blue";
+
 
                 } else {
                     //insertar dentro de la modal el mensaje de fracaso
                     mensaje = document.createTextNode(response["mensaje"]["email"][0]); 
                 
+                    color = "red";
                 }
                 
-                divMensaje.textContent = ""; //limpia el contenido anterior
 
                 parrafo.appendChild(mensaje);
-                divMensaje.appendChild(parrafo);//agrega el mensaje al div dentro de la modal
+                parrafo.style.color = color;
+                divMensajeEmail.appendChild(parrafo);//agrega el mensaje al div dentro de la modal
                 
 
 
@@ -75,6 +81,6 @@ $(document).ready(function () {
 
 
 
-function limpiaMensaje() {
-    document.getElementById("divMensaje").textContent = "";
+function limpiaMensajeEmail() {
+    document.getElementById("divMensajeEmail").textContent = "";
 }

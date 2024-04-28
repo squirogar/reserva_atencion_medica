@@ -2,15 +2,14 @@
 <!-- Modal email -->
 <div class="modal fade" id="emailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-          <div class="modal-content">
+        <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="emailModalLabel">Cambiar Email</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="emailModalLabel">Cambiar Email</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="limpiaMensajeEmail()"></button>
             </div>
-            <div class="modal-body">
-    
-                <form method="post" id="formCambiaEmail">
-                
+            
+            <div class="modal-body">    
+                <form method="post" id="formCambiaEmail">                
                 <div>
                     <p class="d-block">
                         Escriba en la casilla su nuevo email. Presione "Guardar" para confirmar los cambios.
@@ -21,9 +20,9 @@
                         {{form_cambio_email}}
                     </div>
 
-                    <div id="loadingEmail" style="display: none;"></div>
+                    <div id="loading" style="display: none;"></div>
 
-                    <div class="d-block text-center" id="divMensaje">
+                    <div class="d-block text-center" id="divMensajeEmail">
                         <!-- acá debería estar el mensaje que indica éxito/fracaso de la operación -->
                     </div>
                                         
@@ -31,16 +30,16 @@
                 
             </div>
             <div class="modal-footer">
-                    <button class="btn btn-primary" type="submit" id="btnGuardarEmail">Guardar</button>
+                <button class="btn btn-primary" type="submit" id="btnGuardarEmail">Guardar</button>
                     
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="limpiaMensaje()">Cerrar</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="limpiaMensajeEmail()">Cerrar</button>
                     
-                </div>
+            </div>
             
                 </form>
           
         </div>
-        </div>
+    </div>
 </div>
 
 <script>const cambiaEmailUrl = "{% url 'usr:cambia_email' %}"</script>

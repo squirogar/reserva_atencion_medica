@@ -39,7 +39,7 @@
 
 
 <div class="text-center my-5" style="width: 50%; margin: auto;">
-    <h1>Datos de {{usuario.first_name}} {{usuario.last_name}}</h1>
+    <h1>Datos de <span id="nombreTitulo">{{usuario.first_name}}</span> <span id="apellidoTitulo">{{usuario.last_name}}</span></h1>
     <table class="table table-hover my-5">
         <tbody>
             <tr>
@@ -83,7 +83,6 @@
     </button>
 
     
-    <a href="{% url 'usr:cambia_password' %}"><button type="button" class="btn btn-primary">Cambiar contraseña</button></a>
     
 
 </div>
