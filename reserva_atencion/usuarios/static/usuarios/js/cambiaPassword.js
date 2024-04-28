@@ -1,13 +1,13 @@
 $(document).ajaxStart(function(){
     console.log("muestra")
-    document.getElementById("loading").style.display = "block";
+    document.getElementById("loadingPass").style.display = "block";
     document.getElementById("btnGuardarPass").disabled = true;
 
 });
 
 $(document).ajaxStop(function(){
     console.log("oculta")
-    document.getElementById("loading").style.display = "none";
+    document.getElementById("loadingPass").style.display = "none";
     document.getElementById("btnGuardarPass").disabled = false;
 });
 

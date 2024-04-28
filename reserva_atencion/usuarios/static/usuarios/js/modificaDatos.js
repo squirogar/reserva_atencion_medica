@@ -1,13 +1,13 @@
 $(document).ajaxStart(function(){
     console.log("muestra")
-    document.getElementById("loading").style.display = "block";
+    document.getElementById("loadingModDatos").style.display = "block";
     document.getElementById("btnGuardarModificarDatos").disabled = true;
 
 });
 
 $(document).ajaxStop(function(){
     console.log("oculta")
-    document.getElementById("loading").style.display = "none";
+    document.getElementById("loadingModDatos").style.display = "none";
     document.getElementById("btnGuardarModificarDatos").disabled = false;
 });
 

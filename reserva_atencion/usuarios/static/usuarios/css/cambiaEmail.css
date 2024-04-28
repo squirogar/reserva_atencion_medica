@@ -1,7 +1,7 @@
 
-#loading{
-    height: 50px;
-    width: 50px;
+#loadingEmail{
+    height: 30px;
+    width: 30px;
     border: 6px solid;
     border-color:black white;
     border-radius: 50%;

@@ -1,13 +1,13 @@
 $(document).ajaxStart(function(){
     console.log("muestra")
-    document.getElementById("loading").style.display = "block"; //display:block
+    document.getElementById("loadingEmail").style.display = "block"; //display:block
     document.getElementById("btnGuardarEmail").disabled = true;
 
 });
 
 $(document).ajaxStop(function(){
     console.log("oculta")
-    document.getElementById("loading").style.display = "none";//$('#loadingEmail').hide(); //display:none
+    document.getElementById("loadingEmail").style.display = "none";//$('#loadingEmail').hide(); //display:none
     document.getElementById("btnGuardarEmail").disabled = false;
 });
 
