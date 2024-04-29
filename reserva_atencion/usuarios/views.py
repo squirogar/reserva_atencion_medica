@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from .forms import CambioEmailForm, CambioDatosForm
-from django.contrib import messages
+
 from django.http import JsonResponse
 from django.core.mail import send_mail
 # Create your views here.
