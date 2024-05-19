@@ -63,6 +63,7 @@ class UserCreationFormulario(UserCreationForm):
 
         print(type(rut))
 
+        # validamos que cumpla con el formato requerido
         match = re.fullmatch(r"^\d{8}-[\dk]$", rut)
 
         print("re: ", match)
@@ -71,11 +72,73 @@ class UserCreationFormulario(UserCreationForm):
             raise forms.ValidationError("El rut debe ser de longitud 10, con guión y dígito verificador")
         
 
+        # validamos que sea un rut válido
+        if not self.valida_rut(rut):
+            raise forms.ValidationError("El rut ingresado no es válido.")
+
         
         # Always return a value to use as the new cleaned data, even if
         # this method didn't change it.
         return rut
-    
+
+
+    def valida_rut(self, rut):
+        """
+        Realiza la comprobación de que el rut sea válido utilizando
+        el algoritmo del módulo 11.
+
+        retorna True si el rut especificado es válido, de lo contrario
+        se retorna False.
+        """
+
+        RUT = rut.lower()
+        digitos = RUT.split("-")[0]
+        # se debe invertir el orden de los dígitos del rut
+        digitos = digitos[::-1]
+        
+        FACTORES = [2, 3, 4, 5, 6, 7, 2, 3]
+        resultados = []
+
+        # se multiplica cada dígito por su factor ponderado
+        for digito, factor in zip(digitos, FACTORES):
+            resultados.append(int(digito) * factor)
+        
+        suma = sum(resultados)
+        resto = suma % 11
+
+        # asignamos el dígito verificador del rut de acuerdo
+        # al resultado final de la operación
+        resultado_final = 11 - resto
+        digito_verificador = -1
+
+        if resultado_final < 10:
+            digito_verificador = resultado_final
+        elif resultado_final == 10:
+            digito_verificador = "k"
+        elif resultado_final == 11:
+            digito_verificador = 0
+
+        # Comprobamos que el dígito verificador del rut 
+        # ingresado sea el mismo que el calculado por el
+        # algoritmo del módulo 11
+        ultimo_digito = RUT[-1] # string
+
+        if (ultimo_digito != "k"):
+            ultimo_digito = int(ultimo_digito)
+
+        if ultimo_digito == digito_verificador:
+            return True
+        else:
+            return False
+
+
+
+
+        
+
+
+
+
     def clean_first_name(self):
         first_name = self.cleaned_data["first_name"]
 
