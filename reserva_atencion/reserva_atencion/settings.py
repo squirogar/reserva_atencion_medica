@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     "main",
     "usuarios",
     "hospital",
+    "crispy_forms",
+    "crispy_bootstrap5",
+    "feriados",
     "autenticacion",
-    'crispy_forms',
-    'crispy_bootstrap5',
     "contacto",
 ]
 
@@ -89,9 +90,20 @@ DATABASES = {
         "PASSWORD": "root",
         "HOST": "127.0.0.1",
         "DATABASE_PORT": "5432",
-    }
+    },
+
+    'feriados_db': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "feriados",
+        "USER": "postgres",
+        "PASSWORD": "root",
+        "HOST": "127.0.0.1",
+        "DATABASE_PORT": "5432",
+    },
 }
 
+
+DATABASE_ROUTERS = ["reserva_atencion.routers.ReservaAtencionRouter"]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

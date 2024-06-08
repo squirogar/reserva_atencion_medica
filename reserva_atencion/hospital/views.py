@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Medico, Atencion, Box
+from feriados.models import Feriados
 from usuarios.models import Usuario
 from django.contrib.auth.decorators import login_required
 
@@ -23,6 +24,8 @@ locale.setlocale(locale.LC_ALL, 'es_Es')
 
 
 
+
+### vistas simples de recuperacion de datos ###
 @login_required(login_url="auth:login")
 def historial(request):
     # se recuperan el usuario conectado
@@ -39,8 +42,21 @@ def historial(request):
     return render(request, "hospital/historial.html", context=contexto)
 
 
-###
 
+@login_required(login_url="auth:login")
+def medicos(request):
+    # se recuperan todos los medicos y los boxes donde trabajan
+    medicos_con_box = Medico.objects.select_related("box")
+
+    lista_medicos = {"medicos": medicos_con_box}
+
+    return render(request, "hospital/medicos.html", lista_medicos)
+
+
+
+
+
+### vistas que procesan la reserva de atención ###
 
 @login_required(login_url="auth:login")
 def reservar_atencion(request):
@@ -81,52 +97,31 @@ def reservar_atencion(request):
 
 
 
-
-
-def limpia_semana(semana, hoy):
-    print("\n\nLimpia semana\n")
-    print(semana)
-    # eliminamos sabado y domingo
-    del semana["sábado"]
-    del semana["domingo"]
-
-    # si consideramos el dia de hoy para pedir hora
-    hora_hoy = hoy.time()   
-
-    numero_dia_hoy = calendar.weekday(hoy.year, hoy.month, hoy.day) # numero_dia actual: [0-6]
-    dia = calendar.day_name[numero_dia_hoy] # dia de la semana que es hoy
-
-    print(numero_dia_hoy, dia, hora_hoy)
-
-    if semana.get(dia, None): # se verifica que hoy no sea domingo, ya que domingo no se atiende
-        #print(semana[dia], hora_hoy, hora_hoy >= time(7, 30, 0))
-        if hora_hoy >= time(7, 30, 0): # no se puede reservar atencion para un mismo dia despues de las 7:30
-            del semana[dia]
-    
-    print("semana luego de la eliminacion ", semana)
-
-    return semana
-
-
-
 def habilitado_para_reservar(usuario):
     """
-    Retorna un entero que indica si el usuario conectado puede reservar 
+    Retorna un código que es un entero que indica si el usuario conectado puede reservar 
     una atencion. Este entero puede tener uno de estos 3 valores:
     - 0: el usuario puede reservar una atención
-    - 1: el usuario no puede reservar una atención, ya que es sábado o domingo 
-    antes de las 17:00.
+    - 1: el usuario no puede reservar una atención, ya que es sábado, o domingo 
+    antes de las 17:00 hrs.
     - 2: el usuario no puede reservar una atención, ya que tiene una reserva
     de atención que aún no expira (fecha y hora de hoy <= fecha y hora de atencion). 
     
+    Args: 
+    - usuario (str): nombre de usuario conectado
+
+    Returns:
+    - dict: con un codigo (int) y un objeto de tipo hospital.models.Atencion en el caso
+    que el código sea 2.
+
     """
     print("\nHabilitado para reservar\n")
 
     codigo = -1
     ultima_atencion_reservada = None
 
-    hoy = timezone.localtime(timezone.now())
-    hora_hoy = hoy.time()
+    hoy = timezone.localtime(timezone.now()) # fecha actual
+    hora_hoy = hoy.time() # tiempo actual
     dia_semana = calendar.weekday(hoy.year, hoy.month, hoy.day) # [0-6]
     
     # si es sabado, o (domingo y la hora < 17:00)
@@ -177,8 +172,147 @@ def habilitado_para_reservar(usuario):
 
 
 
+def get_semana(year, month, day):
+    """
+    Devuelve los días restantes de la semana de acuerdo a una fecha consultada.
+
+    Args:
+    - year (int): año
+    - month (int): mes
+    - day (int): día
+
+    Returns:
+    - dict con la fecha consultada y las fechas de los días restantes de la semana.
+    """
 
 
+    ## obtención número y nombre del día de la fecha consultada ##
+    c = calendar.Calendar()        
+    numero_dia = calendar.weekday(year, month, day) # [0-6]
+    nombre_dia = calendar.day_name[numero_dia] # [lun,..., dom]
+
+    print(numero_dia, nombre_dia)
+
+
+
+    ## obtención de la semana en la que está la fecha consultada ##
+
+    # monthdayscalendar() retorna una lista de las semanas del mes
+    # como semanas completas.
+    mes = c.monthdayscalendar(year, month)
+
+    fechas_semana = None # lista de objetos tipo datetime.date
+    nombres_dias = None # lista de strings
+
+    # si el dia consultado es domingo y es ultimo dia del mes. 
+    if mes[-1][-1] == day: 
+        
+        # obtenemos los nombres de los dias de la semana 
+        nombres_dias = [calendar.day_name[d] for d in range(0, 7)]
+        
+        # monthdatescalendar() en vez de retornar una lista con
+        # números como monthdayscalendar() de la semanas del mes,
+        # retorna objetos de tipo datetime.date.
+
+        if month == 12: # si es diciembre
+            # obtenemos la primera semana de enero del año siguiente
+            fechas_semana = c.monthdatescalendar(year+1, 1)[0]
+        
+        else:
+            # obtenemos la primera semana del mes siguiente
+            fechas_semana = c.monthdatescalendar(year, month+1)[0]
+            
+    else:
+        # obtenemos la semana a la que pertenece la fecha consultada
+        numero_semana = 0 # num_semana=0: primera semana del mes
+        for semana in mes:
+            if day in semana:
+                print(f"hoy.day {day}, semana {semana}, hoy.month {month}")
+                break
+            numero_semana += 1        
+
+        # en caso de que el día sea domingo, obtenemos la semana siguiente
+        if numero_dia == 6: 
+            numero_semana += 1 
+            numero_dia = 0 # lunes
+
+
+        # obtenemos las fechas de toda la semana
+        fechas_semana = c.monthdatescalendar(year, month)[numero_semana]
+
+        # guardamos solo las fechas de los dias restantes de la semana [numero_dia,...,dom]
+        fechas_semana = fechas_semana[numero_dia:]
+
+        # obtenemos los nombres de los dias restantes de la semana [numero_dia,...,domingo]
+        nombres_dias = [calendar.day_name[d] for d in range(numero_dia, 7)]
+
+
+
+    ## guardamos cada dia con su correspondiente fecha ##
+    info_semana = {}
+    semana = {}
+    for d, f in zip(nombres_dias, fechas_semana):
+        semana[d] = f
+
+
+    info_semana["hoy"] = date(year, month, day)
+    info_semana["semana"] = semana
+
+    return info_semana
+
+
+
+
+def limpia_semana(semana, hoy):
+    """
+    Elimina los feriados, los sábados y domingos, y el día de hoy en el caso
+    que la hora actual sea mayor a 7:30 hrs.
+    Args:
+    - semana: 
+    """
+    print("\n\nLimpia semana\n")
+    print(semana)
+
+    # eliminamos sabado y domingo
+    del semana["sábado"]
+    del semana["domingo"]
+
+    print("semana al eliminar sabado y domingo: ", semana)
+
+    # eliminamos los feriados
+    for d, f in semana.items():
+        if Feriados.objects.get(fecha=f):
+            print("Es un feriado")
+            del semana[d]
+    
+    print("semana despues de eliminar los feriados: ", semana)
+
+
+    # si consideramos o no el dia de hoy para pedir hora
+    hora_hoy = hoy.time()   
+    dia = calendar.day_name[calendar.weekday(hoy.year, hoy.month, hoy.day)] # dia de la semana que es hoy
+
+    print(dia, hora_hoy)
+
+    if semana.get(dia, None):
+        
+        print(semana[dia], hora_hoy, hora_hoy >= time(7, 30, 0))
+        
+        if hora_hoy >= time(7, 30, 0): # no se puede reservar atencion para un mismo dia despues de las 7:30
+            del semana[dia]
+    
+    print("semana luego de la eliminacion ", semana)
+
+    return semana
+
+
+
+
+
+
+
+
+### vistas llamadas mediante ajax ###
 
 @login_required(login_url="auth:login")
 def get_horas_disponibles(request):
@@ -240,7 +374,7 @@ def get_horas_disponibles(request):
 
 
 
-
+### vistas que procesan el guardado de la atencion y la respuesta al usuario ###
 
 @login_required(login_url="auth:login")
 def ingresar_atencion_medica(request):
@@ -329,83 +463,8 @@ def enviar_email(contexto):
 
 
 
-def get_semana(year, month, day):
-
-    c = calendar.Calendar()
-    
-    #hoy = datetime.datetime.now() # saber la fecha actual
-    numero_dia_hoy = calendar.weekday(year, month, day) # numero_dia actual: [0-6]
-    dia = calendar.day_name[numero_dia_hoy] # dia de la semana que es hoy
-
-    print(numero_dia_hoy, dia)
-
-    # queremos saber en que semana esta el dia de hoy
-    mes = c.monthdayscalendar(year, month)
-
-    fechas_semana = None
-    nombres_dias = None
-
-    # si el dia actual es domingo y es ultimo dia del mes. 
-    if mes[-1][-1] == day: 
-        
-        # obtenemos los nombres de los dias de la semana 
-        nombres_dias = [calendar.day_name[d] for d in range(0, 7)]
-        
-        if month == 12: # si es diciembre
-            # obtenemos la primera semana de enero del año siguiente
-            fechas_semana = c.monthdatescalendar(year+1, 1)[0]
-        
-        else:
-            # obtenemos la primera semana del mes siguiente
-            fechas_semana = c.monthdatescalendar(year, month+1)[0]
-            
-    else:
-        num_semana = 0 # semana correspondiente a hoy. num_semana=0=primera semana del mes
-        for semana in mes:
-            if day in semana:
-                print(f"hoy.day {day}, semana {semana}, hoy.month {month}")
-                break
-            num_semana += 1        
-
-        
-        if numero_dia_hoy == 6: # si hoy es domingo
-            num_semana += 1 # queremos la semana siguiente
-            numero_dia_hoy = 0 # consideramos hoy = lunes
-
-
-        # obtenemos las fechas de toda la semana actual
-        fechas_semana = c.monthdatescalendar(year, month)[num_semana]
-
-        # guardamos solo las fechas de los dias restantes de la semana [hoy,..., domingo]
-        fechas_semana = fechas_semana[numero_dia_hoy:]
-
-        # obtenemos los nombres de los dias restantes de la semana [hoy,..., domingo]
-        nombres_dias = [calendar.day_name[d] for d in range(numero_dia_hoy, 7)]
-
-
-
-    # guardamos cada dia con su correspondiente fecha (nombre_dia, fecha)
-    info_semana = {}
-    semana = {}
-    for d, f in zip(nombres_dias, fechas_semana):
-        semana[d] = f
-
-
-    info_semana["hoy"] = date(year, month, day)
-    info_semana["semana"] = semana
-
-    return info_semana
 
 
 
 
 
-
-@login_required(login_url="auth:login")
-def medicos(request):
-    # se recuperan todos los medicos y los boxes donde trabajan
-    medicos_con_box = Medico.objects.select_related("box")
-
-    lista_medicos = {"medicos": medicos_con_box}
-
-    return render(request, "hospital/medicos.html", lista_medicos)
