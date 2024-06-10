@@ -118,7 +118,7 @@ def habilitado_para_reservar(usuario):
     """
     print("\nHabilitado para reservar\n")
 
-    codigo = 0#-1
+    codigo = -1
     ultima_atencion_reservada = None
 
 
