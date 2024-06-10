@@ -60,6 +60,7 @@ def medicos(request):
 
 @login_required(login_url="auth:login")
 def reservar_atencion(request):
+    
     print("\n\nvista Reservar_atencion:\n")
     
     contexto = {}
@@ -117,8 +118,9 @@ def habilitado_para_reservar(usuario):
     """
     print("\nHabilitado para reservar\n")
 
-    codigo = -1
+    codigo = 0#-1
     ultima_atencion_reservada = None
+
 
     hoy = timezone.localtime(timezone.now()) # fecha actual
     hora_hoy = hoy.time() # tiempo actual
@@ -265,13 +267,17 @@ def get_semana(year, month, day):
 
 def limpia_semana(semana, hoy):
     """
-    Elimina los feriados, los sábados y domingos, y el día de hoy en el caso
-    que la hora actual sea mayor a 7:30 hrs.
+    Elimina de la semana los feriados, los sábados y domingos, y el 
+    día de hoy en el caso que la hora actual sea mayor a 7:30 hrs. 
+    Retorna un diccionario con las fechas de los días que quedan.
     Args:
-    - semana: 
+    - semana (dict): {dia: fecha}
+    - hoy (datetime.datetime)
+    Returns:
+    - semana (dict): {dia: fecha}
     """
     print("\n\nLimpia semana\n")
-    print(semana)
+    print(semana, type(hoy))
 
     # eliminamos sabado y domingo
     del semana["sábado"]
@@ -280,8 +286,9 @@ def limpia_semana(semana, hoy):
     print("semana al eliminar sabado y domingo: ", semana)
 
     # eliminamos los feriados
-    for d, f in semana.items():
-        if Feriados.objects.get(fecha=f):
+    semana_copia = dict(semana)
+    for d, f in semana_copia.items():
+        if Feriados.objects.filter(fecha=f).exists():
             print("Es un feriado")
             del semana[d]
     
@@ -340,12 +347,13 @@ def get_horas_disponibles(request):
 
     # vamos pregunta por cada horario los medicos disponibles
     opciones = []
-    horarios= [
-            "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30",
-            "12:00", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"
-        ]
+    # horarios= [
+    #         "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30",
+    #         "12:00", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"
+    #     ]
     
-    
+    horarios = ["8:00", "9:00"]
+
     for hora in horarios:
         print("\t hora", hora)
 
