@@ -102,7 +102,10 @@ function setListenerBoton(data) {
             
             
     
-            let dropdown2HTML = '<p class="paso">3. Elija el médico:</p><select  name="medico" class="sel text-center form-control form-control-lg">';
+            let dropdown2HTML = '<p class="paso">3. Elija el médico</p>'
+            + '<p class="paso">Médicos disponibles a las '
+            + `${hora_elegida} hrs.</p>`
+            + '<select  name="medico" class="sel text-center form-control form-control-lg">';
             medicos.forEach(function (medico) {
                 dropdown2HTML += '<option value="' + medico[0] + '">' + medico[1] + ' ' + medico[2] + '</option>';
     

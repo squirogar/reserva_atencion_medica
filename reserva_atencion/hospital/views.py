@@ -9,10 +9,10 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
 
-from datetime import date, time
 import calendar
 import locale
-from django.utils import timezone
+from .utils_hosp import get_fecha_hora_hoy, formatea_fecha, crea_fecha, crea_hora
+from . import horarios_hosp
 
 from django.db import IntegrityError
 
@@ -73,7 +73,7 @@ def reservar_atencion(request):
     if info["codigo"] == 0: # si el usuario esta habilitado
 
         # obtenemos los días restantes de la semana
-        dia_de_hoy = timezone.localtime(timezone.now())
+        dia_de_hoy = get_fecha_hora_hoy()
         fechas_semana = get_semana(dia_de_hoy.year, dia_de_hoy.month, dia_de_hoy.day)
 
         # limpiamos la semana
@@ -122,12 +122,12 @@ def habilitado_para_reservar(usuario):
     ultima_atencion_reservada = None
 
 
-    hoy = timezone.localtime(timezone.now()) # fecha actual
+    hoy = get_fecha_hora_hoy()
     hora_hoy = hoy.time() # tiempo actual
     dia_semana = calendar.weekday(hoy.year, hoy.month, hoy.day) # [0-6]
     
     # si es sabado, o (domingo y la hora < 17:00)
-    if dia_semana == 5 or (dia_semana == 6 and hora_hoy < time(17, 00, 0)): 
+    if dia_semana == 5 or (dia_semana == 6 and hora_hoy < crea_hora(17,0,0)): 
         print("es sabado o domingo < 17:00")
         codigo = 1
 
@@ -257,7 +257,7 @@ def get_semana(year, month, day):
         semana[d] = f
 
 
-    info_semana["hoy"] = date(year, month, day)
+    info_semana["hoy"] = crea_fecha(year, month, day)
     info_semana["semana"] = semana
 
     return info_semana
@@ -303,9 +303,9 @@ def limpia_semana(semana, hoy):
 
     if semana.get(dia, None):
         
-        print(semana[dia], hora_hoy, hora_hoy >= time(7, 30, 0))
+        print(semana[dia], hora_hoy, hora_hoy >= crea_hora(7, 30, 0))
         
-        if hora_hoy >= time(7, 30, 0): # no se puede reservar atencion para un mismo dia despues de las 7:30
+        if hora_hoy >= crea_hora(7, 30, 0): # no se puede reservar atencion para un mismo dia despues de las 7:30
             del semana[dia]
     
     print("semana luego de la eliminacion ", semana)
@@ -337,7 +337,7 @@ def get_horas_disponibles(request):
     print("\nHORAS DISPONIBLES AJAX")
 
     # obtenemos la fecha en la que quiere reservar la atencion
-    fecha = request.GET.get('fecha')
+    fecha = request.GET.get('fecha') #yyyy-mm-dd
     print(fecha)
 
     # obtenemos las atenciones de ese dia en particular
@@ -347,18 +347,23 @@ def get_horas_disponibles(request):
 
     # vamos pregunta por cada horario los medicos disponibles
     opciones = []
+
+    fecha_separada = fecha.split("-")
+    horario = horarios_hosp.get_horario(
+        calendar.weekday(
+            year=int(fecha_separada[0]), 
+            month=int(fecha_separada[1]), 
+            day=int(fecha_separada[2]))
+    )
     # horarios= [
     #         "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30",
     #         "12:00", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"
-    #     ]
-    
-    horarios = ["8:00", "9:00"]
+    # ]
 
-    for hora in horarios:
+    print("horario: ", horario)    
+
+    for hora in horario:
         print("\t hora", hora)
-
-        # el viernes solo se trabaja hasta las 16:00
-        
 
         # Utilizamos exclude() en el modelo Medico para excluir aquellos médicos 
         # que tienen una atención programada a una determinada hora.
@@ -370,7 +375,7 @@ def get_horas_disponibles(request):
         print(list(medicos_disponibles.values_list("id", "nombre", "apellido")))
         
 
-        if medicos_disponibles:
+        if medicos_disponibles.exists():
             # guardamos la lista de medicos junto con la hora
             opciones.append({"hora": hora, "medicos": list(medicos_disponibles.values_list("id", "nombre", "apellido"))})
             
@@ -395,7 +400,7 @@ def ingresar_atencion_medica(request):
         hora_atencion = request.POST["hora"]
         id_usuario_conectado = Usuario.objects.get(username=request.user.username).id
         id_medico = request.POST["medico"]
-        fecha_reserva = timezone.localtime(timezone.now())
+        fecha_reserva = get_fecha_hora_hoy()
 
         print("datos antes de la insercion")
         print(fecha_atencion, hora_atencion, id_usuario_conectado, id_medico, fecha_reserva)
@@ -425,7 +430,7 @@ def ingresar_atencion_medica(request):
                 "id": atencion_ingresada.id,
                 "rut": request.user.username,
                 "email": request.user.email,
-                "fecha": date.fromisoformat(fecha_atencion).strftime("%d-%m-%Y"),
+                "fecha": formatea_fecha(fecha_atencion),
                 "hora": hora_atencion,
                 "medico": f"{medico.nombre} {medico.apellido}",
                 "box": nombre_box,
