@@ -1,39 +1,134 @@
 {% extends "main/base.html" %}
 
+{% block title %}Inicio{% endblock %}
 {% block content %}
-Esta página será un tutorial de como pedir la hora médica
 
+<h1 class="text-center mt-5">Bienvenido!</h1>
 
-<div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Dropdown button
-    </button>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Action</a></li>
-      <li><a class="dropdown-item" href="#">Another action</a></li>
-      <li><a class="dropdown-item" href="#">Something else here</a></li>
-    </ul>
+{% if request.user.is_authenticated %}
+
+<div class="container text-center mt-5">
+  <h2>¿Cómo reservar hora médica?</h2>
+  <p>Usar nuestra plataforma es muy sencillo. Podrá reservar su atención médica en sólo <b>3</b> pasos:</p>
+
+  <div>
+    <h3>Paso 1</h3>
+    <p>Haga click en "Reservar Hora" en el menú. Luego, seleccione el día que quiere ser atendido/a:</p>
+  </div>
+
+  <div>
+    <h3>Paso 2</h3>
+    <p>Seleccione la hora de la atención:</p>
   </div>
 
 
-<div id="f">
+  <div>
+    <h3>Paso 3</h3>
+    <p>Seleccione el médico que lo atenderá y luego haga click en "" para confirmar:</p>
+  </div>
+
+  <div>
+    <p>Si todo ha salido bien, usted será redirigido a una página con todos los datos de la reserva de atención. 
+      Estos mismos datos se le envían a su email asociado a su cuenta.</div>
+
+  
+</div>
+
+<hr>
+
+<div class="container text-center my-3">
+  <h2>Menú</h2>
+  <h3>Historial</h3>
+  <p>Puede ver sus reservas de atención pasadas haciendo click en "Historial" en el menú.</p>
+  <p></p>
+</div>
+
+
+<div class="container text-center my-3">
+  <h3>Médicos</h3>
+  <p>Puede ver nuestro equipo de médicos haciendo click en "Médicos" en el menú.</p>
+  <p></p>
+</div>
+
+
+<div class="container text-center my-3">
+  <h3>Mis datos</h3>
+  <p>Puede ver los datos de su cuenta haciendo click en "Mis datos" en el menú.</p>
+  <p></p>
+</div>
+
+
+<div class="container text-center my-3">
+  <h3>Contacto</h3>
+  <p>Si tiene alguna duda, problema o comentario puede contactarse con nosotros enviándonos un email. 
+    Para ello, haga click en "Contáctenos" en el menú.</p>
+  <p></p>
+</div>
+
+<hr>
+
+<div class="container text-center my-3">
+  <h2>Políticas de uso</h2>
+  <h4>1. Días de atención</h4>
+  <p>La atención del centro médico es de Lunes a viernes. No se atiende en días feriados o fines de semana.</p>
+  
+  <h4>2. Horario de atención</h4>
+  <p>Lunes a Jueves desde las 8:00 hasta las 17:00 hrs.</p>
+  <p>Viernes desde las 8:00 hastas las 16:00 hrs.</p>
+
+  <h4>3. Médicos</h4>
+  <p></p>
+
+  <h4>4. Funcionamiento del sistema</h4>
+  <p>Usted podrá reservar atención médica siempre y cuando:
+    <ul>
+      <li>Queden horas de atención disponibles para la semana. Si estas se llegan a acabar para todos los días no podrá hacer una reserva para <b>esta</b> semana.</li>
+      <li>No</li>
+    </ul>
+    
+
+  </p>
+  
+</div>
+
+
+
+<hr>
+
+<div class="container text-center my-3">
+  <h2>Preguntas Frecuentes</h2>
+  <h4>1. No hay horas disponibles para el día que quiero atenderme</h4>
+  <p></p>
+  
+  <h4>2. No hay médicos disponibles para la hora que quiero atenderme</h4>
+  <p></p>
+
+  <h4>3. El sistema indica que ocurrió un error en la solicitud</h4>
+  <p></p>
+
 
 </div>
 
 
 
-<script>
-  function fun(data){ 
-    console.log(data);
-    //d = document.getElementById("f");
-    //d.textContent = data;
-    
-}
-</script>
-
-<script src="https://apis.digital.gob.cl/fl/feriados/2024/05?callback=fun"></script>
 
 
+
+
+
+
+
+
+
+
+
+{% else %}
+  <div class="container text-center my-5">
+    <h3>Para utilizar la plataforma de reserva de atención es necesario que <a href="{% url 'auth:login' %}">inicie sesión</a>.</h3>
+    <h3>Si no tiene cuenta, puede registrarse <a href="{% url 'auth:registro' %}">aquí</a>.</h3>
+  </div>
+
+{% endif %}
 
 
 

@@ -22,3 +22,10 @@
     width:500px;
     
 }
+
+.divcontacto {
+    background-color: #7ed6df;
+    border-color: #22a6b3;
+    border-width: 5px;
+    border-style: solid;
+}

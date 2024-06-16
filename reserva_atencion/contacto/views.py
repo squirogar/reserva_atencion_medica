@@ -7,7 +7,7 @@ from django.contrib import messages
 
 # Create your views here.
 
-@login_required(login_url="auth:login")
+#@login_required(login_url="auth:login")
 def contacto(request):
     formulario = FormularioContacto()
     
