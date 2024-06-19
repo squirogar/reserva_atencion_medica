@@ -3,116 +3,205 @@
 {% block title %}Inicio{% endblock %}
 {% block content %}
 
-<h1 class="text-center mt-5">Bienvenido!</h1>
+<div class="container my-5 text-center">
+	<h1>¡Bienvenido!</h1>
+
+	<p class="lead fw-normal my-3 fs-4">En esta plataforma usted podrá reservar su atención médica para la presente semana, 
+	indicando el día, la hora y el médico que usted quiera.</p>
+
+</div>
+
 
 {% if request.user.is_authenticated %}
 
-<div class="container text-center mt-5">
-  <h2>¿Cómo reservar hora médica?</h2>
-  <p>Usar nuestra plataforma es muy sencillo. Podrá reservar su atención médica en sólo <b>3</b> pasos:</p>
+<hr>
 
-  <div>
-    <h3>Paso 1</h3>
-    <p>Haga click en "Reservar Hora" en el menú. Luego, seleccione el día que quiere ser atendido/a:</p>
-  </div>
+<!-- seccion instrucciones -->
+<div class="container my-5">
+	<div class="mb-5">
+	<h2>¿Cómo reservar hora médica?</h2>
+	<p>Haga click en <b>Reservar Hora</b> en el menú. Allí usted podrá reservar su atención médica en sólo 3 pasos:</p>
+	</div>
 
-  <div>
-    <h3>Paso 2</h3>
-    <p>Seleccione la hora de la atención:</p>
-  </div>
+	<div class="mb-5">
+	<h3>Paso 1</h3>
+	<p>Luego, seleccione el día que quiere ser atendido:</p>
+	</div>
+
+	<div class="mb-5">
+	<h3>Paso 2</h3>
+	<p>Seleccione la hora de la atención:</p>
+	</div>
 
 
-  <div>
-    <h3>Paso 3</h3>
-    <p>Seleccione el médico que lo atenderá y luego haga click en "" para confirmar:</p>
-  </div>
+	<div class="mb-5">
+	<h3>Paso 3</h3>
+	<p>Seleccione el médico que lo atenderá y luego haga click en el botón <i>Reservar atención</i> para confirmar:</p>
+	</div>
 
-  <div>
-    <p>Si todo ha salido bien, usted será redirigido a una página con todos los datos de la reserva de atención. 
-      Estos mismos datos se le envían a su email asociado a su cuenta.</div>
+	<div class="mb-5">
+	<p>Si todo ha salido bien, usted será redirigido a una página con todos los datos de la reserva de atención. 
+		Estos mismos datos se le envían a su email asociado a su cuenta.
+	</p>
+	</div>
 
+	<div class="mb-5">
+		<p>Si ha cometido algún error durante el proceso, siempre podrá hacer click en <i>Limpiar búsqueda</i> para volver
+			a empezar de nuevo.
+		</p>
+	</div>
   
 </div>
+
+<!-- end seccion instrucciones -->
+<hr>
+
+<!-- seccion menu -->
+<div class="container my-5">
+	<div class="mb-5">
+		<h2>Menú</h2>
+		<p>A continuación se describirán brevemente los servicios disponibles en el menú.</p>
+	</div>
+
+	<div class="mb-5">
+		<h3>1. Reservar hora</h3>
+		<p>Puede reservar una atención médica haciendo click en <b>Reservar hora</b> en el menú.
+		Solo tendrá que especificar el día, la hora y el médico que quiere que lo atienda.</p>
+		
+	</div>
+
+
+	<div class="mb-5">
+		<h3>2. Historial</h3>
+		<p>Puede ver sus reservas de atención pasadas haciendo click en <b>Historial</b> en el menú.</p>
+	</div>
+
+	<div class="mb-5">
+		<h3>3. Médicos</h3>
+		<p>Puede ver nuestro equipo de médicos haciendo click en <b>Médicos</b> en el menú.
+			Los médicos se mostrarán con su foto, nombre, su especialidad y el box en el que atienden.
+		</p>		
+	</div>
+
+
+
+	<div class="mb-5">
+		<h3>4. Mis datos</h3>
+		<p>Puede ver y modificar los datos de su cuenta, como por ejemplo, nombre, contraseña, email, etc., haciendo click en <b>Mis datos</b> en el menú.</p>
+	</div>
+
+
+	<div class="mb-5">
+		<h3>5. Contacto</h3>
+		<p>Si tiene alguna duda, problema o comentario puede contactarse con nosotros enviándonos un email. 
+		Para ello, haga click en <b>Contacto</b> en el menú. Nuestro equipo de soporte se comunicará con usted 
+		via email lo antes posible.</p>
+	</div>
+
+</div>
+
+<!-- end seccion menu -->
 
 <hr>
 
-<div class="container text-center my-3">
-  <h2>Menú</h2>
-  <h3>Historial</h3>
-  <p>Puede ver sus reservas de atención pasadas haciendo click en "Historial" en el menú.</p>
-  <p></p>
+<!-- seccion uso  -->
+
+<div class="container my-5">
+	<div class="mb-5">
+		<h2>Condiciones de uso</h2>
+		<p>Para que usted tenga la mejor experiencia posible, le recomendamos que lea atentamente 
+			 las siguiente normas antes de reservar su atención médica. Esto le permitirá comprender
+			más fácilmente el funcionamiento correcto de la plataforma.</p>
+	</div>
+
+	<div class="mb-5">
+		<h3>1. Horario de atención médica</h3>
+		<p>El recinto médico atiende a sus pacientes en el siguiente horario:</p>
+		<ul>
+			<li>Lunes a Jueves desde las 8:00 hasta las 17:00 hrs.</li>
+			<li>Viernes desde las 8:00 hastas las 16:00 hrs.</li>
+		</ul>		
+		<p class="text-danger"><b>El recinto médico no atiende en días feriados o fines de semana.</b></p>		
+	</div>
+	
+
+	<div class="mb-5">
+		<h3>2. Funcionamiento del sistema</h3>
+		<p>Usted podrá efectuar una reserva de atención en el siguiente horario:
+			<ul>
+				<li>Domingo desde las 17:00 hasta viernes 7:30 hrs.</li>
+			</ul>
+		</p>
+
+		<p>El sistema siempre mostrará los días hábiles restantes de la presente semana (sin considerar feriados).</p>
+	
+		<p>Usted podrá realizar la reserva de atención para un mismo día siempre y cuando se haga antes de las 7:30 hrs., sino deberá reservar para el día siguiente.</p>
+
+		<p class="text-danger"><b>Si usted cuenta con una reserva que aún está activa, no podrá efectuar otra reserva de atención. 
+			Deberá esperar que la reserva expire (fecha posterior a la de la reserva) para que quede nuevamente habilitado para realizar la operación.</b></p>
+
+	</div>		
+
+
+
+	<div class="mb-5">
+		<h3>3. Médicos</h3>
+		<p>Cada médico tiene asignado su propio box de atención, por lo que no pueden haber haber dos médicos que atiendan en el mismo box durante la semana.</p>
+	</div>
+
 </div>
 
-
-<div class="container text-center my-3">
-  <h3>Médicos</h3>
-  <p>Puede ver nuestro equipo de médicos haciendo click en "Médicos" en el menú.</p>
-  <p></p>
-</div>
-
-
-<div class="container text-center my-3">
-  <h3>Mis datos</h3>
-  <p>Puede ver los datos de su cuenta haciendo click en "Mis datos" en el menú.</p>
-  <p></p>
-</div>
-
-
-<div class="container text-center my-3">
-  <h3>Contacto</h3>
-  <p>Si tiene alguna duda, problema o comentario puede contactarse con nosotros enviándonos un email. 
-    Para ello, haga click en "Contáctenos" en el menú.</p>
-  <p></p>
-</div>
-
-<hr>
-
-<div class="container text-center my-3">
-  <h2>Políticas de uso</h2>
-  <h4>1. Días de atención</h4>
-  <p>La atención del centro médico es de Lunes a viernes. No se atiende en días feriados o fines de semana.</p>
-  
-  <h4>2. Horario de atención</h4>
-  <p>Lunes a Jueves desde las 8:00 hasta las 17:00 hrs.</p>
-  <p>Viernes desde las 8:00 hastas las 16:00 hrs.</p>
-
-  <h4>3. Médicos</h4>
-  <p></p>
-
-  <h4>4. Funcionamiento del sistema</h4>
-  <p>Usted podrá reservar atención médica siempre y cuando:
-    <ul>
-      <li>Queden horas de atención disponibles para la semana. Si estas se llegan a acabar para todos los días no podrá hacer una reserva para <b>esta</b> semana.</li>
-      <li>No</li>
-    </ul>
-    
-
-  </p>
-  
-</div>
-
+<!-- end seccion uso -->
 
 
 <hr>
 
-<div class="container text-center my-3">
-  <h2>Preguntas Frecuentes</h2>
-  <h4>1. No hay horas disponibles para el día que quiero atenderme</h4>
-  <p></p>
-  
-  <h4>2. No hay médicos disponibles para la hora que quiero atenderme</h4>
-  <p></p>
+<!-- seccion faq -->
+<div class="container my-5">
+	<div class="mb-5">
+		<h2>FAQ</h2>
+		<p>Las preguntas frecuentes (FAQ) son una recopilación de respuestas a las consultas más comunes que los usuarios 
+			pueden tener sobre un servicio específico de nuestra plataforma. Si tiene un problema que no esté en esta sección
+			no dude en contactar a nuestro soporte en la página de <b>Contacto</b>.
+		</p>
+	</div>
 
-  <h4>3. El sistema indica que ocurrió un error en la solicitud</h4>
-  <p></p>
+	<div class="mb-5">
+		<h4>1. No hay horas disponibles para el día que quiero atenderme</h4>
+		<p>Si al seleccionar </p>
+	</div>
+
+	<div class="mb-5">
+		<h4>2. No hay médicos disponibles para la hora que quiero atenderme</h4>
+		<p></p>
+	</div>
+
+	<div class="mb-5">
+		<h4>3. El sistema indica que ocurrió un error en la solicitud</h4>
+		<p></p>
+	</div>
 
 
 </div>
 
+<!-- end seccion preguntas -->
 
+<hr>
 
+<!-- seccion politica -->
+<div class="container my-5">
+	<h2>Política de privacidad</h2>
+	<p class="mb-5">
+		Nuestra página web se compromete a respetar la privacidad de los datos de nuestros usuarios. 
+		Garantizamos que toda la información personal recopilada será utilizada exclusivamente para los 
+		fines especificados y no será compartida con ninguna empresa externa ni utilizada de manera 
+		indebida. Implementamos estrictas medidas de seguridad para proteger los datos y asegurar su 
+		confidencialidad en todo momento.
+	</p>
+</div>
+<!-- end seccion politica -->
 
-
+<hr>
 
 
 

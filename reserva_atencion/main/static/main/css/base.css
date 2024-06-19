@@ -1,8 +1,15 @@
 
-.footer {
+.footer_sticky {
     position: fixed;
     left: 0;
     bottom: 0;
+    width: 100%;
+    background-color: #212528;
+    color: white;
+    
+}
+
+.footer_no_sticky {
     width: 100%;
     background-color: #212528;
     color: white;

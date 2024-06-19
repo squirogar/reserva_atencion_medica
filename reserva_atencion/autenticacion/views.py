@@ -31,7 +31,7 @@ def ingresar(request):
             # si es correcta la info, entonces usuario != None
             if usuario is not None:
                 login(request, usuario)
-                return redirect("hosp:reservar_atencion")
+                return redirect("home")
         """
             else:
                 messages.error(request, "Error: No se encuentra el usuario")
@@ -66,7 +66,7 @@ def registro(request):
             # loguea automaticamente al usuario recien registrado
             login(request, usuario)
 
-            return redirect("hosp:reservar_atencion")
+            return redirect("home")
         else:
             messages.error(request, "Error: los datos ingresados presentan errores.")
             print("error")
