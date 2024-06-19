@@ -10,10 +10,10 @@ from django.contrib import messages
 
 
 def ingresar(request):
-    form = LoginFormulario()#AuthenticationForm()
+    form = LoginFormulario()
     if request.method == "POST":
         # guardamos la data enviada por el usuario
-        form = LoginFormulario(request, request.POST)#AuthenticationForm(request, request.POST)
+        form = LoginFormulario(request, request.POST)
 
 
         # si el formulario es valido
@@ -21,18 +21,14 @@ def ingresar(request):
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
             
-            print(username, password)
-
             # comparamos con la info que está en la bd
             usuario = authenticate(username=username, password=password)
-
-            print(usuario)
 
             # si es correcta la info, entonces usuario != None
             if usuario is not None:
                 login(request, usuario)
-                return redirect("home")
-        """
+                return redirect("hosp:reservar_atencion")
+        
             else:
                 messages.error(request, "Error: No se encuentra el usuario")
                 print("error")
@@ -43,7 +39,7 @@ def ingresar(request):
                 "Error: Datos incorrectos."
             )
             print("error")
-        """    
+            
 
     return render(request, "autenticacion/login.html", context={"form": form})
 
@@ -66,7 +62,7 @@ def registro(request):
             # loguea automaticamente al usuario recien registrado
             login(request, usuario)
 
-            return redirect("home")
+            return redirect("hosp:reservar_atencion")
         else:
             messages.error(request, "Error: los datos ingresados presentan errores.")
             print("error")

@@ -3,61 +3,50 @@
 {% block title %}Inicio{% endblock %}
 {% block content %}
 
+
+<!-- div presentacion -->
 <div class="container my-5 text-center">
-	<h1>¡Bienvenido!</h1>
-
-	<p class="lead fw-normal my-3 fs-4">En esta plataforma usted podrá reservar su atención médica para la presente semana, 
-	indicando el día, la hora y el médico que usted quiera.</p>
-
-</div>
-
-
-{% if request.user.is_authenticated %}
-
-<hr>
-
-<!-- seccion instrucciones -->
-<div class="container my-5">
 	<div class="mb-5">
-	<h2>¿Cómo reservar hora médica?</h2>
-	<p>Haga click en <b>Reservar Hora</b> en el menú. Allí usted podrá reservar su atención médica en sólo 3 pasos:</p>
-	</div>
-
-	<div class="mb-5">
-	<h3>Paso 1</h3>
-	<p>Luego, seleccione el día que quiere ser atendido:</p>
-	</div>
-
-	<div class="mb-5">
-	<h3>Paso 2</h3>
-	<p>Seleccione la hora de la atención:</p>
-	</div>
-
-
-	<div class="mb-5">
-	<h3>Paso 3</h3>
-	<p>Seleccione el médico que lo atenderá y luego haga click en el botón <i>Reservar atención</i> para confirmar:</p>
-	</div>
-
-	<div class="mb-5">
-	<p>Si todo ha salido bien, usted será redirigido a una página con todos los datos de la reserva de atención. 
-		Estos mismos datos se le envían a su email asociado a su cuenta.
-	</p>
-	</div>
-
-	<div class="mb-5">
-		<p>Si ha cometido algún error durante el proceso, siempre podrá hacer click en <i>Limpiar búsqueda</i> para volver
-			a empezar de nuevo.
+		<h1>Bienvenido a S.R.A. Online</h1>
+	
+		<p class="lead fw-normal my-3 fs-4">
+			Nuestra plataforma web permite a los usuarios reservar su atención médica para la semana actual, eligiendo el día, 
+			la hora y el médico de su preferencia. Diseñada para solucionar el problema de acceso a servicios médicos en la 
+			ciudad, nuestra herramienta elimina la necesidad de madrugar para conseguir una cita presencial. 
 		</p>
 	</div>
-  
+	
+
+	<div class="mb-5">		
+		<h2>¿Por qué utilizar S.R.A. Online?</h2>
+		<p class="mt-3">
+			Porque puede asegurar su atención médica de manera rápida y cómoda desde la comodidad de su hogar, con tan sólo unos clics. 
+			Son solo <b>3</b> pasos los necesarios para efectuar su reserva. Todos los datos de su reserva lista se le enviarán a su
+			correo para recordarle su cita y además dentro de nuestra plataforma podrá ver el historial de reservas para un 
+			seguimiento fácil de sus visitas médicas. Nuestra prioridad es brindar una experiencia eficiente y sin estrés, 
+			mejorando significativamente el acceso a la atención sanitaria en nuestra comunidad.
+		</p>
+		
+		<a href="{% url 'auth:login' %}"><button class="btn btn-primary">Comenzar</button></a>
+	</div>
+
+	
+	
 </div>
+<!-- end div presentacion -->
+
+
+
 
 <!-- end seccion instrucciones -->
-<hr>
+
+
+<div class="container"><hr></div>
+
+
 
 <!-- seccion menu -->
-<div class="container my-5">
+<!-- <div class="container my-5">
 	<div class="mb-5">
 		<h2>Menú</h2>
 		<p>A continuación se describirán brevemente los servicios disponibles en el menú.</p>
@@ -98,24 +87,23 @@
 		via email lo antes posible.</p>
 	</div>
 
-</div>
+</div> -->
 
 <!-- end seccion menu -->
 
-<hr>
 
 <!-- seccion uso  -->
 
 <div class="container my-5">
-	<div class="mb-5">
+	<div class="text-center mb-5">
 		<h2>Condiciones de uso</h2>
-		<p>Para que usted tenga la mejor experiencia posible, le recomendamos que lea atentamente 
+		<p class="mt-3">Para que usted tenga la mejor experiencia posible, le recomendamos que lea atentamente 
 			 las siguiente normas antes de reservar su atención médica. Esto le permitirá comprender
 			más fácilmente el funcionamiento correcto de la plataforma.</p>
 	</div>
 
-	<div class="mb-5">
-		<h3>1. Horario de atención médica</h3>
+	<div class="mb-5" id="horario_atencion">
+		<h4>1. Horario de atención médica</h3>
 		<p>El recinto médico atiende a sus pacientes en el siguiente horario:</p>
 		<ul>
 			<li>Lunes a Jueves desde las 8:00 hasta las 17:00 hrs.</li>
@@ -126,7 +114,7 @@
 	
 
 	<div class="mb-5">
-		<h3>2. Funcionamiento del sistema</h3>
+		<h4>2. Funcionamiento del sistema</h4>
 		<p>Usted podrá efectuar una reserva de atención en el siguiente horario:
 			<ul>
 				<li>Domingo desde las 17:00 hasta viernes 7:30 hrs.</li>
@@ -145,7 +133,7 @@
 
 
 	<div class="mb-5">
-		<h3>3. Médicos</h3>
+		<h4>3. Médicos</h4>
 		<p>Cada médico tiene asignado su propio box de atención, por lo que no pueden haber haber dos médicos que atiendan en el mismo box durante la semana.</p>
 	</div>
 
@@ -154,31 +142,53 @@
 <!-- end seccion uso -->
 
 
-<hr>
+<div class="container"><hr></div>
 
 <!-- seccion faq -->
 <div class="container my-5">
-	<div class="mb-5">
+	<div class=" text-center mb-5">
 		<h2>FAQ</h2>
-		<p>Las preguntas frecuentes (FAQ) son una recopilación de respuestas a las consultas más comunes que los usuarios 
+		<p class="mt-3">Las preguntas frecuentes (FAQ) son una recopilación de respuestas a las consultas más comunes que los usuarios 
 			pueden tener sobre un servicio específico de nuestra plataforma. Si tiene un problema que no esté en esta sección
-			no dude en contactar a nuestro soporte en la página de <b>Contacto</b>.
+			no dude en contactar a nuestro soporte en la página de <a href="{% url 'cont:contacto' %}">Contacto</a>.
 		</p>
 	</div>
 
 	<div class="mb-5">
-		<h4>1. No hay horas disponibles para el día que quiero atenderme</h4>
-		<p>Si al seleccionar </p>
+		<h5>1. No hay horas disponibles para el día que quiero atenderme</h4>
+		<p>
+			Si al seleccionar un día el sistema le indica que no hay horas disponibles, entonces deberá elegir otro día para atenderse.
+			Los cupos de atención por día son limitados. Por favor, revise el <a href="#horario_atencion">horario de atención</a> del centro médico si tiene alguna
+			duda.
+		</p>
 	</div>
 
 	<div class="mb-5">
-		<h4>2. No hay médicos disponibles para la hora que quiero atenderme</h4>
-		<p></p>
+		<h5>2. No aparece el médico que quiero a la hora seleccionada</h4>
+		<p>
+			El sistema sólo mostrará los médicos disponibles a la hora señalada, por lo que deberá seleccionar otra hora u otro día.
+		</p>
 	</div>
 
 	<div class="mb-5">
-		<h4>3. El sistema indica que ocurrió un error en la solicitud</h4>
-		<p></p>
+		<h5>3. El sistema indica que ocurrió un error en la solicitud</h5>
+		<p>
+			Revise su conexión a internet y si no se le ha cerrado la sesión.
+			Su sesión dura 10 minutos, por lo que si se demora más de ese tiempo
+			su sesión expirará. Después de revisar estas dos condiciones intente
+			nuevamente realizar la solicitud. Si después de realizar los pasos
+			anteriores continúa el problema, <a href="{% url 'cont:contacto' %}">contáctese con nosotros</a>. 
+		</p>
+	</div>
+
+	<div class="mb-5">
+		<h5>4. No me llega el email para cambiar mi contraseña</h5>
+		<p>
+			Revise su carpeta de <i>Spam</i> de su email si es que está. 
+			Además, asegúrese de haber escrito correctamente la dirección de email. 
+			Si después de realizar estas dos verificaciones aún continúa con problemas, 
+			no dude en <a href="{% url 'cont:contacto' %}">contactarse con nosotros</a>. 
+		</p>
 	</div>
 
 
@@ -186,12 +196,12 @@
 
 <!-- end seccion preguntas -->
 
-<hr>
+<div class="container"><hr></div>
 
 <!-- seccion politica -->
-<div class="container my-5">
+<div class="container text-center my-5">
 	<h2>Política de privacidad</h2>
-	<p class="mb-5">
+	<p class="mt-3 mb-5">
 		Nuestra página web se compromete a respetar la privacidad de los datos de nuestros usuarios. 
 		Garantizamos que toda la información personal recopilada será utilizada exclusivamente para los 
 		fines especificados y no será compartida con ninguna empresa externa ni utilizada de manera 
@@ -201,26 +211,7 @@
 </div>
 <!-- end seccion politica -->
 
-<hr>
-
-
-
-
-
-
-
-
-
-{% else %}
-  <div class="container text-center my-5">
-    <h3>Para utilizar la plataforma de reserva de atención es necesario que <a href="{% url 'auth:login' %}">inicie sesión</a>.</h3>
-    <h3>Si no tiene cuenta, puede registrarse <a href="{% url 'auth:registro' %}">aquí</a>.</h3>
-  </div>
-
-{% endif %}
-
-
-
+<div class="container my-5"><hr></div>
 
 
 

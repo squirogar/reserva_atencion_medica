@@ -191,7 +191,7 @@ class LoginFormulario(AuthenticationForm):
         """
         rut = self.cleaned_data["username"]
 
-        print(type(rut))
+        
 
         match = re.fullmatch(r"^\d{8}-[\dk]$", rut)
 

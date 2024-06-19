@@ -24,7 +24,10 @@
             </button>
   
             <div class="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
-                <div class="navbar-brand col-lg-3 me-0"><img src="{% static 'main/img/logo/logo_32px.jpg' %}" alt="SQR"></div>
+                <div class="navbar-brand col-lg-3 me-0">
+                    <img src="{% static 'main/img/logo/logo_32px.jpg' %}" alt="SQR">
+                    S.R.A. Online
+                </div>
                 <ul class="navbar-nav col-lg-6 justify-content-lg-center">
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">
