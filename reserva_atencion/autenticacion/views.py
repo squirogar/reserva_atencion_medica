@@ -28,7 +28,7 @@ def ingresar(request):
             if usuario is not None:
                 login(request, usuario)
                 return redirect("hosp:reservar_atencion")
-        
+        """
             else:
                 messages.error(request, "Error: No se encuentra el usuario")
                 print("error")
@@ -39,7 +39,7 @@ def ingresar(request):
                 "Error: Datos incorrectos."
             )
             print("error")
-            
+        """    
 
     return render(request, "autenticacion/login.html", context={"form": form})
 
@@ -52,7 +52,7 @@ def registro(request):
     form = UserCreationFormulario()
 
     if request.method == "POST":
-        print(request.POST)
+        
         form = UserCreationFormulario(request.POST)
         if form.is_valid():
             # si el formulario es valido guardalo en la base de datos  

@@ -18,7 +18,6 @@ def perfil(request):
     if request.user.is_authenticated:
         username = request.user.username
         usuario = Usuario.objects.get(username=username)
-        print(f"usuario {usuario}")
         perfil_usuario["usuario"] = usuario
         
         perfil_usuario["form_cambio_datos"] = CambioDatosForm(instance=request.user)
@@ -55,8 +54,7 @@ def cambia_password(request):
         return JsonResponse({"cambio_efectivo": cambio_efectivo, "mensajes": mensajes})
 
     return redirect("usr:perfil")
-    #return render(request, 'usuarios/cambia_password.html', context={"form": form,})
-
+    
 
 
 
@@ -70,7 +68,6 @@ def cambia_datos(request):
         form = CambioDatosForm(data=request.POST, instance=request.user)
         if form.is_valid():
 
-            print("save")
             form.save()
             cambio_efectivo = True
             datos["nombre"] = form.cleaned_data["first_name"]
@@ -97,7 +94,6 @@ def cambia_email(request):
         form = CambioEmailForm(data=request.POST, instance=request.user)
         if form.is_valid():
             email_nuevo = form.cleaned_data["email"]
-            print("save")
             form.save()
             cambio_efectivo = True
             mensaje = "Éxito"

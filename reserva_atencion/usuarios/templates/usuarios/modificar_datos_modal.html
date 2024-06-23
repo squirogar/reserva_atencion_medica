@@ -2,11 +2,14 @@
 <div class="modal fade" id="modificarDatosModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modificarDatosModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
+            <!-- header modal -->
             <div class="modal-header">
                 <h5 class="modal-title" id="modificarDatosModalLabel">Cambiar datos personales</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="limpiaMensajeModDatos()"></button>
             </div>
-        
+            <!-- end header modal -->
+            
+            <!-- modal body -->
             <div class="modal-body">
 
                 <!-- formulario -->
@@ -29,20 +32,25 @@
                 </div>
                 
             </div>
+            <!-- end modal body -->
 
+            <!-- modal footer -->
             <div class="modal-footer">
                 <button class="btn btn-primary" type="submit" id="btnGuardarModificarDatos">Guardar</button>
                 
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="limpiaMensajeModDatos()">Cerrar</button>
                 
             </div>
-        
+            <!-- end modal footer -->
+                
                 </form>
                 <!-- end form-->
       
         </div>
     </div>
 </div>
+<!-- end modal cambia datos -->
 
 
+<!-- scripts -->
 <script>let modificaDatosUrl = "{% url 'usr:cambia_datos' %}"</script>

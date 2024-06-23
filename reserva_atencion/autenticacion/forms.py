@@ -61,12 +61,12 @@ class UserCreationFormulario(UserCreationForm):
         """
         rut = self.cleaned_data["username"]
 
-        print(type(rut))
+        
 
         # validamos que cumpla con el formato requerido
         match = re.fullmatch(r"^\d{8}-[\dk]$", rut)
 
-        print("re: ", match)
+        
         
         if not match:
             raise forms.ValidationError("El rut debe ser de longitud 10, con guión y dígito verificador")
@@ -144,7 +144,7 @@ class UserCreationFormulario(UserCreationForm):
 
         match = regex.fullmatch(r"^\p{L}+$", first_name)
 
-        print("re: ", match)
+        
         
         if not match:
             raise forms.ValidationError("El nombre solo debe contener letras.")
@@ -157,7 +157,7 @@ class UserCreationFormulario(UserCreationForm):
 
         match = regex.fullmatch(r"^\p{L}+$", last_name)
 
-        print("re: ", match)
+        
         
         if not match:
             raise forms.ValidationError("El apellido solo debe contener letras.")
@@ -195,7 +195,7 @@ class LoginFormulario(AuthenticationForm):
 
         match = re.fullmatch(r"^\d{8}-[\dk]$", rut)
 
-        print("re: ", match)
+        
         
         if not match:
             raise forms.ValidationError("El rut debe ser de longitud 10, con guión y dígito verificador")

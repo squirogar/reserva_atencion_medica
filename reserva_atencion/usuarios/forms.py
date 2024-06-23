@@ -18,8 +18,6 @@ class CambioDatosForm(forms.ModelForm):
         first_name = self.cleaned_data["first_name"]
 
         match = regex.fullmatch(r"^\p{L}+$", first_name)
-
-        print("re: ", match)
         
         if not match:
             raise forms.ValidationError("El nombre solo debe contener letras.")
@@ -31,7 +29,6 @@ class CambioDatosForm(forms.ModelForm):
 
         match = regex.fullmatch(r"^\p{L}+$", last_name)
 
-        print("re: ", match)
         
         if not match:
             raise forms.ValidationError("El apellido solo debe contener letras.")
@@ -49,11 +46,8 @@ class CambioEmailForm(forms.ModelForm):
     def clean_email(self):
         usuario = self.instance
         email = self.cleaned_data["email"]
-        print("usuario email ", usuario.email)
-        print("usuario nuevo email ", email)
 
         if usuario.email == email:
-            print("iguales")
             raise forms.ValidationError("El email nuevo debe ser diferente al que ya tiene registrado")
 
         return email

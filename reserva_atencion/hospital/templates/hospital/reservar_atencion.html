@@ -7,7 +7,7 @@
 
 {% block content %}
 
-
+<!-- titulo -->
 <div class="container text-center my-5">
     <h1>Reservar una atención médica</h1>
     
@@ -15,18 +15,22 @@
         <h4>Día de hoy: {{hoy}}</h4>
     {% endif %}    
 </div>
+<!-- end titulo -->
 
 {% if codigo == 1 %}
+    <!-- div sistema cerrado -->
     <div class="container text-center">
         <p class="unable">Ya no quedan más horas disponibles, por lo que el sistema de reserva de atenciones médicas se encuentra cerrado. Vuelva el día domingo a las 17:00 hrs.</p>
     </div>
+    <!-- end sistema cerrado -->
 
 {% elif codigo == 2 %}
+    <!-- div no habilitado -->
     <div class="container text-center">
         <p class="unable">No puede reservar una atención médica, ya que usted ya tiene una atención reservada para el día {{fecha_ultima_atencion}} a las {{hora_ultima_atencion}} hrs.</p>
         <p class="unable">Debe esperar que expire dicha atención médica para volver a reservar.</p>
     </div>
-
+    <!-- end div no habilitado -->
 {% else %}
     <!-- div general -->
     <div class="container text-center mb-5">
@@ -106,8 +110,10 @@
 
 <!-- seccion instrucciones -->
 <div class="container my-5">
-	<h3 class="my-5">¿Cómo reservar hora médica?</h2>
-	
+    <div class="my-5">
+        <h3>¿Cómo reservar hora médica?</h3>
+        <p class="lead fw-normal my-3 fs-5">Recuerde revisar la sección de <a href="{% url 'home' %}#horario_atencion">condiciones de uso</a> antes de hacer su reserva.</p>        
+    </div>
     
     <div class="mb-5">
 	<h5>Paso 1</h5>

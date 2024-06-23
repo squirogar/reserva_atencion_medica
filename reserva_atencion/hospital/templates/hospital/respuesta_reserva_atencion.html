@@ -10,18 +10,24 @@
 {% block content %}
 
 {% if error %}
+    <!-- div error -->
     <div class="container text-center my-5">
         <h1>Error en reserva de atención</h1>
         <div class="divinfo my-5">
             <p>Ha ocurrido un error en la reserva de atención. Por favor, intente nuevamente.</p>
         </div>
     </div>
+    <!-- end div error -->
 {% else %}
+    <!-- div información -->
     <div class="container text-center my-5">
         <h1>Atención reservada</h1>
+        
+        <!-- contenido de la reserva -->
         <div class="divinfo my-5">
-
             <p>La información de su reserva de atención es la siguiente:</p>
+            
+            <!-- tabla de datos reserva -->
             <table class="table table-bordered table-hover my-5 border-dark">
                 <tr>
                     <th scope="row">Id atención</th>
@@ -49,14 +55,14 @@
                 </tr>
                 </tr>
             </table>
-            
-
-            
+            <!-- end tabla de datos reserva -->
 
             Esta información se le ha enviado a su email <b>{{email}}</b> como respaldo.
         </div>
-    </div>
+        <!-- end contenido reserva -->
 
+    </div>
+    <!-- end div información -->
 
 {% endif %}
 

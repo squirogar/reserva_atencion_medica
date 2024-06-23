@@ -6,60 +6,53 @@
 {% block title %}Médicos{% endblock %}
 
 {% block content %}
-
+<!-- title -->
 <div class="container text-center my-5">
 
     <h1>Médicos</h1>
 </div>
+<!-- end title -->
 
 {% if medicos %}
 <h3 class="text-center">Nuestro equipo de médicos es el siguiente:</h3>
 <div class="album py-5">
-  <div class="container text-center">
-    <div class="row">
-      {% for medico in medicos %}
-        <div class="col-md-4">
-          <!-- card -->
-          <div class="card mb-4 shadow-sm">
-            <!-- img -->
-             <div class="text-center">
+  	<div class="container text-center">
+    	<!-- fila -->
+		<div class="row">
+			{% for medico in medicos %}
+				<!-- columna -->
+				<div class="col-md-4">
+					<!-- card -->
+					<div class="card mb-4 shadow-sm">
+						<!-- img -->
+						<div class="text-center">
+							{% if medico.imagen %}
+								<img src="{{ medico.imagen.url }}" class="imagenmedico img-fluid rounded-circle" alt="{{medico}}">
+							{% endif %}
+						</div>
+						<!-- end img -->
 
-               {% if medico.imagen %}
-                 <img src="{{ medico.imagen.url }}" class="imagenmedico img-fluid rounded-circle" alt="{{medico}}">
-               {% endif %}
-             </div>
-            <!-- end img -->
-
-            <!-- card body -->
-            <div class="card-body">
-              <h5 class="card-title">Dr. {{medico.nombre | capfirst}} {{medico.apellido | capfirst}}</h5>
-              <p class="card-text">Especialidad: {{medico.especialidad | capfirst}}</p>
-              <p class="card-text">Box de atención: {{medico.box | capfirst}}</p>
-              <!-- <p class="card-text">dd{{ m.description }}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">asa</small>
-              </div> -->
-            </div>
-            <!-- end card body -->
-
-
-          </div>
-          <!-- end card -->
-        </div>
-      {% endfor %}
-    </div>
-  </div>
+						<!-- card body -->
+						<div class="card-body">
+							<h5 class="card-title">Dr. {{medico.nombre | capfirst}} {{medico.apellido | capfirst}}</h5>
+							<p class="card-text">Especialidad: {{medico.especialidad | capfirst}}</p>
+							<p class="card-text">Box de atención: {{medico.box | capfirst}}</p>						
+						</div>
+						<!-- end card body -->
+					</div>
+					<!-- end card -->
+				</div>
+				<!-- end columna -->
+			{% endfor %}
+    	</div>
+		<!-- end fila -->
+	</div>
 </div>
-
 
 
 {% else %}
 
-No hay medicos disponibles
+<p class="text-center">No hay medicos disponibles</p>
 
 {% endif %}
 

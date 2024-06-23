@@ -3,24 +3,13 @@
 {% block title %}Registro{% endblock %}
 
 
-
-
 {% block body %}
 
+    <!-- div content -->
     <div class="container text-center my-5">
         <h1>Registro</h1>
         
-        <!--
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-        -->
-
-        <!--form-->
+        <!-- formulario -->
         <div id="divReg" class="container my-5 formulario border border-primary p-3">
         <form action="{% url 'auth:registro' %}" method="post">
             {% csrf_token %}
@@ -30,12 +19,12 @@
             </div><!--end div button-->
         </form>
         </div>
-        <!--end div form-->
+        <!-- end formulario -->
         
-        
-        <a href="{% url 'auth:login' %}"> <button class="btn btn-danger">Volver</button></a>
+        <!-- boton login -->
+        <a href="{% url 'auth:login' %}"> <button class="btn btn-secondary">Iniciar sesión</button></a>
     </div> 
-    
+    <!-- end div content -->
 
 
 {% endblock %}

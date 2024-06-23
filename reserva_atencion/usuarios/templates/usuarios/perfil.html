@@ -31,9 +31,10 @@
 
 
 
-
+<!-- div de datos usuario -->
 <div class="text-center my-5" style="width: 50%; margin: auto;">
     <h1>Datos de <span id="nombreTitulo">{{usuario.first_name}}</span> <span id="apellidoTitulo">{{usuario.last_name}}</span></h1>
+    <!-- tabla de datos -->
     <table class="table table-hover my-5">
         <tbody>
             <tr>
@@ -61,38 +62,40 @@
                 <td id="ultimaConexion">{{usuario.last_login}}</td>
             </tr>
         </tbody>
-      </table>
+    </table>
+    <!-- end tabla de datos -->
     
-    
+    <!-- boton modificar datos-->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modificarDatosModal">
         <div class="d-flex">
             <span class="material-symbols-outlined mx-1">person_edit</span>
             Modificar datos
         </div>
-        
     </button>
+    <!-- end boton modificar datos -->
 
+    <!-- boton cambiar email -->
     <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#emailModal">
         <div class="d-flex">
             <span class="material-symbols-outlined mx-1">mail</span>
             Cambiar Email
         </div>
     </button>
+    <!-- end boton cambiar email -->
 
+    <!-- boton cambiar contraseña -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cambiaPasswordModal">
         <div class="d-flex">
             <span class="material-symbols-outlined mx-1">password</span>
             Cambiar contraseña
         </div>            
     </button>
-
+    <!-- end boton cambiar contraseña-->
     
-    
-
 </div>
+<!-- end div datos usuario -->
 
-
-
+<!-- scripts -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="{% static 'usuarios/js/cambiaEmail.js' %}"></script>
 <script src="{% static 'usuarios/js/modificaDatos.js' %}"></script>
