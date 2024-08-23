@@ -30,4 +30,4 @@ def crea_hora(hour, min, sec):
     Recibe 3 enteros: hora, minuto y segundo.
     devuelve un objeto datetime.time
     """
-    return time(17, 00, 0)
+    return time(hour, min, sec)

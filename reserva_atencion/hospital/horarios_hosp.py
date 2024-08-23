@@ -14,7 +14,7 @@ def get_horario(dia):
     horario = [
         "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", 
         "11:00", "11:30", "12:00", "14:00", "14:30", 
-        "15:00", "15:30", "16:00"
+        "15:00", "15:30",
     ]
 
     print(dia)
@@ -26,6 +26,6 @@ def get_horario(dia):
         return horario
 
     else:
-        horario.extend(["16:30"])
+        horario.extend(["16:00", "16:30"])
         return horario
     

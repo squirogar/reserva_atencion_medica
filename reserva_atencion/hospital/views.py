@@ -303,6 +303,7 @@ def limpia_semana(semana, hoy):
 
     if semana.get(dia, None):
         
+        
         print(semana[dia], hora_hoy, hora_hoy >= crea_hora(7, 30, 0))
         
         if hora_hoy >= crea_hora(7, 30, 0): # no se puede reservar atencion para un mismo dia despues de las 7:30
@@ -417,7 +418,7 @@ def ingresar_atencion_medica(request):
             
         except IntegrityError as err:
             print(err)
-            contexto = {"error": True}
+            contexto = {"error": True, "codigo": "001"}
         else:
             # si el ingreso fue exitoso y no ocurrio un error, entonces renderizamos 
             # la plantilla de exito con los datos de la reserva y enviamos un email 
