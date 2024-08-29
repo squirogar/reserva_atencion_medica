@@ -10,23 +10,31 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import environ # variables de entorno
 from pathlib import Path
 from django.contrib.messages import constants as messages
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Take environment variables from .env file
+
+### environ ###
+env = environ.Env()
+environ.Env.read_env()  
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a-6q%e$&3s+#i10j2u8ds)hlsniil-$^%t-tj=qjd17n_pzn@='
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -82,26 +90,30 @@ WSGI_APPLICATION = 'reserva_atencion.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "reserva_atencion",
-        "USER": "postgres",
-        "PASSWORD": "root",
-        "HOST": "127.0.0.1",
-        "DATABASE_PORT": "5432",
-    },
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': "reserva_atencion",
+#         "USER": "postgres",
+#         "PASSWORD": "root",
+#         "HOST": "127.0.0.1",
+#         "DATABASE_PORT": "5432",
+#     },
 
-    'feriados_db': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "feriados",
-        "USER": "postgres",
-        "PASSWORD": "root",
-        "HOST": "127.0.0.1",
-        "DATABASE_PORT": "5432",
-    },
-}
+#     'feriados_db': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': "feriados",
+#         "USER": "postgres",
+#         "PASSWORD": "root",
+#         "HOST": "127.0.0.1",
+#         "DATABASE_PORT": "5432",
+#     },
+# }
+DATABASES = {}
+DATABASES["default"] = dj_database_url.config("DJANGO_URL_DB_DEFAULT")
+DATABASES["feriados_db"] = dj_database_url.config("DJANGO_URL_DB_FERIADOS")
 
+print(DATABASES)
 
 DATABASE_ROUTERS = ["reserva_atencion.routers.ReservaAtencionRouter"]
 
@@ -169,8 +181,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  # Cambia esto por el host de tu servidor de correo
 EMAIL_PORT = 587  # Puerto de tu servidor de correo
 EMAIL_USE_TLS = True  # True si tu servidor de correo usa TLS
-EMAIL_HOST_USER = 'cuenta.prueba.dev15@gmail.com'  # Tu dirección de correo electrónico
-EMAIL_HOST_PASSWORD = 'hdgy ztib tmzk rqib'  # Tu contraseña de correo electrónico
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # Tu dirección de correo electrónico
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # Tu contraseña de correo electrónico
 
 
 # redefinimos los tags para utilizar bootstrap
