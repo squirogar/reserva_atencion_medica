@@ -34,8 +34,9 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['*']
-
+# deploy
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.fly.dev']
+CSRF_TRUSTED_ORIGINS = ['https://*.fly.dev']
 
 # Application definition
 
@@ -58,6 +59,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -113,7 +115,7 @@ DATABASES = {}
 DATABASES["default"] = dj_database_url.config("DJANGO_URL_DB_DEFAULT")
 DATABASES["feriados_db"] = dj_database_url.config("DJANGO_URL_DB_FERIADOS")
 
-print(DATABASES)
+
 
 DATABASE_ROUTERS = ["reserva_atencion.routers.ReservaAtencionRouter"]
 
@@ -154,7 +156,15 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"] # necesario para el favicon
 
+# deploy
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
