@@ -47,12 +47,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "feriados",
     "main",
     "usuarios",
     "hospital",
     "crispy_forms",
     "crispy_bootstrap5",
-    "feriados",
     "autenticacion",
     "contacto",
 ]
@@ -94,26 +94,29 @@ WSGI_APPLICATION = 'reserva_atencion.wsgi.application'
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': "reserva_atencion",
-#         "USER": "postgres",
-#         "PASSWORD": "root",
+#         "USER": "root",
+#         "PASSWORD": "",
 #         "HOST": "127.0.0.1",
-#         "DATABASE_PORT": "5432",
+#         "DATABASE_PORT": "3306",
 #     },
 
 #     'feriados_db': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': "feriados",
-#         "USER": "postgres",
-#         "PASSWORD": "root",
+#         "USER": "root",
+#         "PASSWORD": "",
 #         "HOST": "127.0.0.1",
-#         "DATABASE_PORT": "5432",
+#         "DATABASE_PORT": "3306",
 #     },
 # }
+
+
+
 DATABASES = {}
-DATABASES["default"] = dj_database_url.config("DJANGO_URL_DB_DEFAULT")
-DATABASES["feriados_db"] = dj_database_url.config("DJANGO_URL_DB_FERIADOS")
+DATABASES["default"] = dj_database_url.config(env="DJANGO_URL_DB_DEFAULT", conn_max_age=120, conn_health_checks=True)
+DATABASES["feriados_db"] = dj_database_url.config(env="DJANGO_URL_DB_FERIADOS")
 
 
 
@@ -160,7 +163,9 @@ STATICFILES_DIRS = [BASE_DIR / "static"] # necesario para el favicon
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STORAGES = {
-    # ...
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },

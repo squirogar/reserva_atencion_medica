@@ -18,6 +18,7 @@ class ReservaAtencionRouter:
         van a "feriados_db".
         """
         if model._meta.app_label == "feriados":
+            
             return "feriados_db"
         return "default"
 
@@ -56,6 +57,7 @@ class ReservaAtencionRouter:
         Sólo se permite la migración de apps distintas de "feriados" y que la
         base de datos a migrar sea "default".
         """
+
         if app_label != "feriados":
             return db == "default"
         return False

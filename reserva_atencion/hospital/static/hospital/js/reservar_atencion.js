@@ -1,13 +1,11 @@
 
 // Register a handler to be called when the first Ajax request begins. This is an Ajax Event.
 $(document).ajaxStart(function(){
-    console.log("muestra")
     $('#loading').show(); //display:block
 });
 
 //Register a handler to be called when all Ajax requests have completed. This is an Ajax Event.
 $(document).ajaxStop(function(){
-    console.log("oculta")
     $('#loading').hide(); //display:none
 });
 
@@ -19,7 +17,6 @@ $(document).ready(function () {
     $('#form_fecha').submit(function (e) {
         e.preventDefault();
 
-        console.log($('#dropdown_fecha').val());
         $.ajax({
             url: django_url, //"{% url 'hosp:get_horas_disponibles' %}"
             type: "get",
@@ -28,13 +25,9 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (data) {
-                console.log("success");
-                console.log("DATA", data)
-
                 let dropdown2HTML = "";
 
                 if(data["opciones"].length == 0) {
-                    console.log("esta vacio")
                     dropdown2HTML = '<p class="paso" id="error_horas">No hay horas disponibles para este día. Por favor, haga click en '
                     + '"Limpiar búsqueda" y consulte por otro día.</p>'
                 } else {
@@ -56,7 +49,6 @@ $(document).ready(function () {
                 $('#boton_buscar_horas').prop("disabled", true);
                 $('#dropdown_fecha').prop("disabled", true);
 
-                console.log(dropdown2HTML);
                 //establecemos un listener a boton_buscar_medicos
                 setListenerBoton(data);
 
@@ -64,8 +56,6 @@ $(document).ready(function () {
             },
             error : function(jqXHR, status, error) {
                 alert('Disculpe, ocurrió un problema');
-                console.log(status);
-                console.log(error);
             }, 
         });
 
@@ -82,20 +72,16 @@ $(document).ready(function () {
 // establece un listener en el boton buscar medicos
 function setListenerBoton(data) {
     let boton_buscar_medicos = document.getElementById('boton_buscar_medicos');
-    console.log("boton buscar medicos", boton_buscar_medicos);
     
     if(boton_buscar_medicos != null) {
         boton_buscar_medicos.addEventListener("click", function get_medicos() {
             let hora_elegida = document.getElementById('dropdown_horas').value;
-            console.log("hora elegida", hora_elegida);
-    
             let medicos = [];
             
             // recorremos el json "data" para obtener la lista de medicos
             $.each(data.opciones, function (index, opcion) {
                 if (opcion.hora == hora_elegida) {
                     medicos = opcion.medicos
-                    console.log(opcion.medicos);
                     return;
                 }
             });

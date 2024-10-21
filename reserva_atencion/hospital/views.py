@@ -61,8 +61,6 @@ def medicos(request):
 @login_required(login_url="auth:login")
 def reservar_atencion(request):
     
-    print("\n\nvista Reservar_atencion:\n")
-    
     contexto = {}
     
     info = habilitado_para_reservar(request.user.username)
@@ -116,7 +114,6 @@ def habilitado_para_reservar(usuario):
     que el código sea 2.
 
     """
-    print("\nHabilitado para reservar\n")
 
     codigo = -1
     ultima_atencion_reservada = None
@@ -128,7 +125,6 @@ def habilitado_para_reservar(usuario):
     
     # si es sabado, o (domingo y la hora < 17:00)
     if dia_semana == 5 or (dia_semana == 6 and hora_hoy < crea_hora(17,0,0)): 
-        print("es sabado o domingo < 17:00")
         codigo = 1
 
     else:
@@ -138,13 +134,10 @@ def habilitado_para_reservar(usuario):
         id_usuario_conectado = Usuario.objects.get(username=usuario).id
 
         atenciones_usuario_conectado = Atencion.objects.filter(usuario_id=id_usuario_conectado)
-        print(atenciones_usuario_conectado)
 
         if atenciones_usuario_conectado: # si tiene atenciones
             ultima_atencion_reservada = atenciones_usuario_conectado.latest("fecha_reserva")
-                        
-            print("ultima atencion usuario", ultima_atencion_reservada)
-            
+                                    
             fecha_atencion_ultima_reserva = ultima_atencion_reservada.fecha_atencion
             hora_atencion_ultima_reserva = ultima_atencion_reservada.hora_atencion
             
@@ -153,15 +146,12 @@ def habilitado_para_reservar(usuario):
             hora_hoy = hoy.time().replace(microsecond=0)
 
             if hoy.date() < fecha_atencion_ultima_reserva: 
-                print("hoy.date < fecha_atencion")
                 codigo = 2
 
             elif hoy.date() == fecha_atencion_ultima_reserva and hora_hoy <= hora_atencion_ultima_reserva:
-                print("hoy.date == fecha y hoy.hora < hora")
                 codigo = 2
 
             else:
-                print("hoy.date > fecha o hoy.hora > hora")
                 codigo = 0
             
 
@@ -192,9 +182,6 @@ def get_semana(year, month, day):
     c = calendar.Calendar()        
     numero_dia = calendar.weekday(year, month, day) # [0-6]
     nombre_dia = calendar.day_name[numero_dia] # [lun,..., dom]
-
-    print(numero_dia, nombre_dia)
-
 
 
     ## obtención de la semana en la que está la fecha consultada ##
@@ -276,41 +263,30 @@ def limpia_semana(semana, hoy):
     Returns:
     - semana (dict): {dia: fecha}
     """
-    print("\n\nLimpia semana\n")
-    print(semana, type(hoy))
 
     # eliminamos sabado y domingo
     del semana["sábado"]
     del semana["domingo"]
 
-    print("semana al eliminar sabado y domingo: ", semana)
 
     # eliminamos los feriados
     semana_copia = dict(semana)
     for d, f in semana_copia.items():
         if Feriados.objects.filter(fecha=f).exists():
-            print("Es un feriado")
             del semana[d]
     
-    print("semana despues de eliminar los feriados: ", semana)
-
 
     # si consideramos o no el dia de hoy para pedir hora
     hora_hoy = hoy.time()   
     dia = calendar.day_name[calendar.weekday(hoy.year, hoy.month, hoy.day)] # dia de la semana que es hoy
 
-    print(dia, hora_hoy)
 
     if semana.get(dia, None):
         
         
-        print(semana[dia], hora_hoy, hora_hoy >= crea_hora(7, 30, 0))
-        
         if hora_hoy >= crea_hora(7, 30, 0): # no se puede reservar atencion para un mismo dia despues de las 7:30
             del semana[dia]
     
-    print("semana luego de la eliminacion ", semana)
-
     return semana
 
 
@@ -334,16 +310,12 @@ def get_horas_disponibles(request):
 
 
     """
-    print("se llamo a get_horas_disponibles")
-    print("\nHORAS DISPONIBLES AJAX")
 
     # obtenemos la fecha en la que quiere reservar la atencion
     fecha = request.GET.get('fecha') #yyyy-mm-dd
-    print(fecha)
 
     # obtenemos las atenciones de ese dia en particular
     atenciones_del_dia = Atencion.objects.filter(fecha_atencion=fecha)
-    print(atenciones_del_dia, "\n")
 
 
     # vamos pregunta por cada horario los medicos disponibles
@@ -356,24 +328,14 @@ def get_horas_disponibles(request):
             month=int(fecha_separada[1]), 
             day=int(fecha_separada[2]))
     )
-    # horarios= [
-    #         "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30",
-    #         "12:00", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"
-    # ]
-
-    print("horario: ", horario)    
-
-    for hora in horario:
-        print("\t hora", hora)
+    
+    for hora in horario:        
 
         # Utilizamos exclude() en el modelo Medico para excluir aquellos médicos 
         # que tienen una atención programada a una determinada hora.
         atencion_con_hora_fecha = Atencion.objects.filter(hora_atencion=hora, fecha_atencion=fecha)
         medicos_con_atencion = atencion_con_hora_fecha.values_list('medico_id', flat=True)
         medicos_disponibles = Medico.objects.exclude(id__in=medicos_con_atencion)
-
-        print("medicos disponibles: ", medicos_disponibles)
-        print(list(medicos_disponibles.values_list("id", "nombre", "apellido")))
         
 
         if medicos_disponibles.exists():
@@ -393,8 +355,6 @@ def get_horas_disponibles(request):
 @login_required(login_url="auth:login")
 def ingresar_atencion_medica(request):
     
-    print("\n\nse llamo a ingresar_atencion_medica")
-
     if request.method == "POST":
         # reunimos la información recibida por post.
         fecha_atencion = request.POST["fecha"]
@@ -402,9 +362,6 @@ def ingresar_atencion_medica(request):
         id_usuario_conectado = Usuario.objects.get(username=request.user.username).id
         id_medico = request.POST["medico"]
         fecha_reserva = get_fecha_hora_hoy()
-
-        print("datos antes de la insercion")
-        print(fecha_atencion, hora_atencion, id_usuario_conectado, id_medico, fecha_reserva)
 
         try:
             # intentamos ingresar la atencion dentro de la db.

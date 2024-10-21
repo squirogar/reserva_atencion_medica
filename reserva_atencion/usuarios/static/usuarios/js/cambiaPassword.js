@@ -1,12 +1,10 @@
 $(document).ajaxStart(function(){
-    console.log("muestra")
     document.getElementById("loadingPass").style.display = "block";
     document.getElementById("btnGuardarPass").disabled = true;
 
 });
 
 $(document).ajaxStop(function(){
-    console.log("oculta")
     document.getElementById("loadingPass").style.display = "none";
     document.getElementById("btnGuardarPass").disabled = false;
 });
@@ -28,8 +26,6 @@ $(document).ready(function () {
             data: formData,
             dataType: 'json',
             success: function (response) {
-                console.log("success");
-                console.log(response, typeof response);
 
                 const divMensaje = document.getElementById("divMensajePass");                
                 let color = null;
@@ -43,9 +39,7 @@ $(document).ready(function () {
                 
                 } else {
                     //insertar dentro de la modal el mensaje de error
-                    for (const prop in response["mensajes"]) {
-                        console.log(prop, response["mensajes"][prop], typeof response["mensajes"][prop]);
-                        
+                    for (const prop in response["mensajes"]) {                      
                         const parrafo = document.createElement("p"); 
                         parrafo.appendChild(document.createTextNode(response["mensajes"][prop][0]));
                         divMensaje.appendChild(parrafo);//agrega el mensaje al div dentro de la modal
@@ -61,8 +55,6 @@ $(document).ready(function () {
             },
             error : function(jqXHR, status, error) {
                 alert('Disculpe, ocurrió un problema');
-                console.error(status);
-                console.error(error);
             }, 
         });
 

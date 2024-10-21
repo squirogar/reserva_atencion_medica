@@ -1,12 +1,10 @@
 $(document).ajaxStart(function(){
-    console.log("muestra")
     document.getElementById("loadingEmail").style.display = "block"; //display:block
     document.getElementById("btnGuardarEmail").disabled = true;
 
 });
 
 $(document).ajaxStop(function(){
-    console.log("oculta")
     document.getElementById("loadingEmail").style.display = "none";//$('#loadingEmail').hide(); //display:none
     document.getElementById("btnGuardarEmail").disabled = false;
 });
@@ -31,8 +29,6 @@ $(document).ready(function () {
             data: formData,
             dataType: 'json',
             success: function (response) {
-                console.log("success");
-                
                 
                 const divMensaje = document.getElementById("divMensajeEmail");
                 const parrafo = document.createElement("p");
@@ -70,8 +66,6 @@ $(document).ready(function () {
             },
             error : function(jqXHR, status, error) {
                 alert('Disculpe, ocurrió un problema');
-                console.error(status);
-                console.error(error);
             }, 
         });
 

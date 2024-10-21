@@ -1,12 +1,10 @@
 $(document).ajaxStart(function(){
-    console.log("muestra")
     document.getElementById("loadingModDatos").style.display = "block";
     document.getElementById("btnGuardarModificarDatos").disabled = true;
 
 });
 
 $(document).ajaxStop(function(){
-    console.log("oculta")
     document.getElementById("loadingModDatos").style.display = "none";
     document.getElementById("btnGuardarModificarDatos").disabled = false;
 });
@@ -27,8 +25,6 @@ $(document).ready(function () {
             data: formData,
             dataType: 'json',
             success: function (response) {
-                console.log("success");
-                console.log(response);
 
                 const divMensaje = document.getElementById("divMensajeModDatos");                
                 let color = null;
@@ -52,7 +48,6 @@ $(document).ready(function () {
 
                 } else {
                     for (const prop in response["mensajes"]) {
-                        console.log(prop, response["mensajes"][prop][0], typeof response["mensajes"][prop]);
                         
                         const parrafo = document.createElement("p"); 
                         parrafo.appendChild(document.createTextNode(response["mensajes"][prop][0]));
@@ -69,8 +64,6 @@ $(document).ready(function () {
             },
             error : function(jqXHR, status, error) {
                 alert('Disculpe, ocurrió un problema');
-                console.error(status);
-                console.error(error);
             }, 
         });
 

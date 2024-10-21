@@ -21,7 +21,7 @@ class Feriados(models.Model):
     fecha = models.DateField(unique=True)
     motivo = models.CharField(max_length=200)
     tipo = models.CharField(
-        max_length=50,
+        max_length=9,
         choices=TIPO_CHOICES,
     )
 
