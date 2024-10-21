@@ -92,27 +92,6 @@ WSGI_APPLICATION = 'reserva_atencion.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': "reserva_atencion",
-#         "USER": "root",
-#         "PASSWORD": "",
-#         "HOST": "127.0.0.1",
-#         "DATABASE_PORT": "3306",
-#     },
-
-#     'feriados_db': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': "feriados",
-#         "USER": "root",
-#         "PASSWORD": "",
-#         "HOST": "127.0.0.1",
-#         "DATABASE_PORT": "3306",
-#     },
-# }
-
-
 
 DATABASES = {}
 DATABASES["default"] = dj_database_url.config(env="DJANGO_URL_DB_DEFAULT", conn_max_age=120, conn_health_checks=True)
