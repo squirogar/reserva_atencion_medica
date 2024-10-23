@@ -20,7 +20,7 @@ from django.db import IntegrityError
 # Create your views here.
 
 # cambiamos el locale para que los dias de semana sean en español
-locale.setlocale(locale.LC_ALL, 'es_Es')
+locale.setlocale(locale.LC_ALL, 'es_ES')
 
 
 

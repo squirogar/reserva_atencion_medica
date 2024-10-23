@@ -35,7 +35,8 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', default=False)
 
 # deploy
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['Eddreyes.pythonanywhere.com', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://Eddreyes.pythonanywhere.com']
 
 # Application definition
 
