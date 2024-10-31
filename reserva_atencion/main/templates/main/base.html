@@ -122,13 +122,10 @@
                 {% else %}
                     <!--  ingresar y registro-->
                     <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-                        <a href="{% url 'auth:login' %}">
-                            <button class="btn btn-primary mx-3">Ingresar</button>
-                        </a>
-
-                        <a href="{% url 'auth:registro' %}">
-                            <button class="btn btn-secondary">Registro</button>
-                        </a>
+                        
+                        <a class="btn btn-primary mx-1" href="{% url 'auth:login' %}" role="button">Ingresar</a>
+                        
+                        <a class="btn btn-secondary" href="{% url 'auth:registro' %}" role="button">Registro</a>
                     </div>
                 {% endif %}
             

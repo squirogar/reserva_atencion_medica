@@ -11,7 +11,7 @@
 {% block content %} 
 
 <!-- div contenido -->
-<div class="container text-center my-5" id="principal">
+<div class="container text-center my-5">
     <h1>Contacto</h1>
 
     {% if messages %}
@@ -24,16 +24,19 @@
         <!-- end div mensajes -->
     {% endif %}
 
-    <!-- formulario contacto -->
-    <form action="{% url 'cont:contacto' %}", method="POST" class="my-5">
-        {% csrf_token %}
-        {{formulario|crispy}}
-        <div class="d-flex justify-content-center ">
-            <button class="btn btn-primary" type="submit">Enviar</button>
-        </div>
+    <div id="principal" class="container border border-primary my-5">
 
-    </form>
-    <!-- end formulario contacto -->
+        <!-- formulario contacto -->
+        <form action="{% url 'cont:contacto' %}", method="POST" class="my-5" >
+            {% csrf_token %}
+            {{formulario|crispy}}
+            <div class="d-flex justify-content-center ">
+                <button class="btn btn-primary" type="submit">Enviar</button>
+            </div>
+    
+        </form>
+        <!-- end formulario contacto -->
+    </div>
 
 </div>
 <!-- end div contenido -->

@@ -1,4 +1,7 @@
 #principal {
-    width: 500px;
+    max-width: 500px;
 }
 
+input, textarea {
+    border-color: #0d6efd !important;
+}

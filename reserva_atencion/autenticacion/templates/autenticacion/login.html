@@ -10,7 +10,7 @@
         <h1>Inicio de Sesión</h1>
         
         <!-- div contenedor de formulario -->
-        <div  id="divlogin" class="container my-5 formulario border border-primary p-3">
+        <div id="divlogin" class="container my-5 formulario border border-primary p-3">
             <!-- formulario -->
             <form action="{% url 'auth:login' %}" method="post">
                 {% csrf_token %}
@@ -40,5 +40,5 @@
 
 
 {% block extra %}
-{% include 'main/footer_no_sticky.html' %}
+{% include 'main/sticky_footer.html' %}
 {% endblock %}

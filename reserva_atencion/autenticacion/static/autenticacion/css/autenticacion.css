@@ -3,23 +3,27 @@
 }
 
 #divlogin {
-    width:500px;
+    max-width:500px;
     
 }
 
+input {
+    border-color: #0d6efd !important;
+}
+
 #divReg {
-    width:500px;
+    max-width:500px;
     
 }
 
 #divPassReset {
-    width:500px;
+    max-width:500px;
     
 }
 
 
 #divPassResetConf {
-    width:500px;
+    max-width:500px;
     
 }
 

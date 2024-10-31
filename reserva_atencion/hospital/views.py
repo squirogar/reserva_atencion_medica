@@ -73,7 +73,7 @@ def reservar_atencion(request):
         # obtenemos los días restantes de la semana
         dia_de_hoy = get_fecha_hora_hoy()
         fechas_semana = get_semana(dia_de_hoy.year, dia_de_hoy.month, dia_de_hoy.day)
-
+        print(fechas_semana)
         # limpiamos la semana
         semana_limpia = limpia_semana(fechas_semana["semana"], dia_de_hoy)
 

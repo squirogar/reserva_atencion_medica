@@ -63,9 +63,9 @@ def registro(request):
             login(request, usuario)
 
             return redirect("hosp:reservar_atencion")
-        else:
-            messages.error(request, "Error: los datos ingresados presentan errores.")
-            print("error")
+        # else:
+        #     messages.error(request, "Error: los datos ingresados presentan errores.")
+        #     print("error")
 
     return render(request, "autenticacion/registro.html", context={"form":form})
 
