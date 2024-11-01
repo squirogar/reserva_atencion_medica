@@ -1,0 +1,14 @@
+.pDatoLabel {
+    font-size: larger;
+    font-weight: bold;
+}
+
+.pDatoText {
+    background-color: #cff4fc;
+    font-size: larger;
+    border-radius: .3em;
+}
+
+#contenedorPerfil {
+    max-width: 500px;
+}

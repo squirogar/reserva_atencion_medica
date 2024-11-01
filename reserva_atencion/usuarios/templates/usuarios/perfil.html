@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
 {% block head %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'usuarios/css/perfil.css' %}">
 <link rel="stylesheet" href="{% static 'usuarios/css/cambiaEmail.css' %}">
 <link rel="stylesheet" href="{% static 'usuarios/css/modificaDatos.css' %}">
 <link rel="stylesheet" href="{% static 'usuarios/css/cambiaPass.css' %}">
@@ -32,38 +33,36 @@
 
 
 <!-- div de datos usuario -->
-<div class="text-center my-5" style="width: 50%; margin: auto;">
+<div class="container text-center my-5" id="contenedorPerfil">
     <h1>Datos de <span id="nombreTitulo">{{usuario.first_name}}</span> <span id="apellidoTitulo">{{usuario.last_name}}</span></h1>
-    <!-- tabla de datos -->
-    <table class="table table-hover my-5">
-        <tbody>
-            <tr>
-                <th scope="row" class="table-info">Rut</th>
-                <td id="rut">{{usuario.username}}</td>        
-            </tr>
-            <tr>
-                <th scope="row" class="table-info">Nombre</th>
-                <td id="nombre">{{usuario.first_name}}</td>
-            </tr>
-            <tr>
-                <th scope="row" class="table-info">Apellido</th>
-                <td id="apellido">{{usuario.last_name}}</td>
-            </tr>
-            <tr>
-                <th scope="row" class="table-info">E-mail</th>
-                <td id="email">{{usuario.email}}</td>
-            </tr>
-            <tr>
-                <th scope="row" class="table-info">Dirección</th>
-                <td id="direccion">{{usuario.direccion}}</td>
-            </tr>
-            <tr>
-                <th scope="row" class="table-info">Última conexión</th>
-                <td id="ultimaConexion">{{usuario.last_login}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <!-- end tabla de datos -->
+    <!-- div de datos usuario-->
+    <div class="my-5">
+        <div>
+            <p class="pDatoLabel">Rut</p>
+            <p class="pDatoText" id="rut">{{usuario.username}}</p>
+        </div>
+        <div>
+            <p class="pDatoLabel">Nombre</p>
+            <p class="pDatoText" id="nombre">{{usuario.first_name}}</p>
+        </div>
+        <div>
+            <p class="pDatoLabel">Apellido</p>
+            <p class="pDatoText" id="apellido">{{usuario.last_name}}</p>
+        </div>
+        <div>
+            <p class="pDatoLabel">E-mail</p>
+            <p class="pDatoText" id="email">{{usuario.email}}</p>
+        </div>
+        <div>
+            <p class="pDatoLabel">Dirección</p>
+            <p class="pDatoText" id="direccion">{{usuario.direccion}}</p>
+        </div>
+        <div>
+            <p class="pDatoLabel">Última conexión</p>
+            <p class="pDatoText" id="ultimaConexion">{{usuario.last_login}}</p>
+        </div>
+    </div>
+
     
     <!-- boton modificar datos-->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modificarDatosModal">
