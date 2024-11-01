@@ -18,6 +18,27 @@
 </head>
 <body>
     
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
+        <!-- content navbar -->
+        <div class="container-fluid">
+            
+            
+            <!-- menu -->
+            <div class="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
+                <!-- logo -->
+                <div class="navbar-brand col-lg-3 me-0">
+                    <img src="{% static 'main/img/logo/logo_32px.jpg' %}" alt="SQR">
+                    <a href="{% url 'home' %}" style="text-decoration: none; color:white;">S.R.A. Online</a>
+                </div>
+                <!-- end logo -->       
+            </div>
+            <!-- end menu -->
+        </div>
+        <!-- end content navbar -->
+    </nav>    
+    <!-- end navbar -->
+
     {% block body %}{% endblock %}
 
     <!-- div contacto -->
