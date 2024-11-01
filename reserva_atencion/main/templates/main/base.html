@@ -56,7 +56,7 @@
                             <a class="nav-link {% if request.path == '/atencion/reservar/' %}active{% endif %}" href="{% url 'hosp:reservar_atencion' %}">
                                 <div class="d-flex">
                                     <span class="material-symbols-outlined">personal_injury</span>
-                                    Reservar Atención
+                                    Atención
                                 </div>
                             </a>
                         </li>
@@ -89,7 +89,7 @@
                             <a class="nav-link {% if request.path == '/perfil/' %}active{% endif %}" href="{% url 'usr:perfil' %}">
                                 <div class="d-flex">
                                     <span class="material-symbols-outlined">account_circle</span>
-                                    Mis datos
+                                    Perfil
                                 </div>
                             </a>
                         </li>
@@ -105,17 +105,18 @@
                             </div>
                         </a>
                     </li>
-                    <!-- end contacto -->
-                
+                    <!-- end contacto -->                
                 </ul>
                 <!-- end funciones menu -->
-
                 
                 {% if user.is_authenticated %}
                     <!-- logout -->
                     <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-                        <a href="{% url 'auth:cerrar_sesion' %}">
-                            <button class="btn btn-danger">Cerrar Sesión</button>
+                        <a href="{% url 'auth:cerrar_sesion' %}" class="btn btn-danger" role="button">
+                            <div class="d-flex">
+                                <span class="material-symbols-outlined">logout</span>
+                                Salir
+                            </div>                            
                         </a>
                     </div>
                     <!-- end logout -->
@@ -123,9 +124,19 @@
                     <!--  ingresar y registro-->
                     <div class="d-lg-flex col-lg-3 justify-content-lg-end">
                         
-                        <a class="btn btn-primary mx-1" href="{% url 'auth:login' %}" role="button">Ingresar</a>
+                        <a class="btn btn-primary mx-1" href="{% url 'auth:login' %}" role="button">
+                            <div class="d-flex">
+                                <span class="material-symbols-outlined">login</span>
+                                Ingresar
+                            </div>
+                        </a>
                         
-                        <a class="btn btn-secondary" href="{% url 'auth:registro' %}" role="button">Registro</a>
+                        <a class="btn btn-secondary" href="{% url 'auth:registro' %}" role="button">
+                            <div class="d-flex">
+                                <span class="material-symbols-outlined">person_add</span>
+                                Registro
+                            </div>
+                        </a>
                     </div>
                 {% endif %}
             
